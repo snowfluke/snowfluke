@@ -47,20 +47,20 @@ export default function Container({ children, ...customMeta }: ContainerProps) {
         <meta content={meta.description} name="description" />
         <meta
           property="og:url"
-          content={`https://snowfluke.github.io${router.asPath}`}
+          content={`https://snowfluke.vercel.app${router.asPath}`}
         />
         <link
           rel="canonical"
-          href={`https://snowfluke.github.io${router.asPath}`}
+          href={`https://snowfluke.vercel.app${router.asPath}`}
         />
         <meta property="og:type" content={meta.type} />
-        <meta property="og:site_name" content="Awal Ariansyah" />
+        <meta property="og:site_name" content="Awal Ariansyah's Portfolio" />
         <meta property="og:description" content={meta.description} />
         <meta property="og:title" content={meta.title} />
         <meta property="og:image" content={meta.image} />
         <meta property="og:image:alt" content={meta.title} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@awalariansyah" />
+        <meta name="twitter:site" content="@akasha_seeker" />
         <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.description} />
         <meta name="twitter:image" content={meta.image} />
