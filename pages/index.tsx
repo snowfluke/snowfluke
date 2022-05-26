@@ -42,8 +42,8 @@ export default function Home() {
           height="150px"
         />
       </HeroFlex>
-      <Projects />
       <Work />
+      <Projects />
       <Education />
     </Container>
   );
