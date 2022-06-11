@@ -1,6 +1,6 @@
 # Awal Ariansyah [@snowfluke]
 
-Keep it simple and neat, hello there I'm [Awal Ariansyah](https://snowfluke.vercel.app) - Expert generalist and adaptive Node.js Software Engineer with 2+ years of experience across multiple platform and contemporary framework to deliver a performant, efficient and friendly execution of code through enjoyable debugging. Familiar with JS, MERN, Next, React Native, SQL, NoSQL and ready to adapt new learning curve in the future
+Keep it simple and neat, I'm [Awal Ariansyah](https://snowfluke.vercel.app) - Expert generalist and adaptive Node.js Software Engineer with 2+ years of experience across multiple platform and contemporary framework to deliver a performant, efficient and friendly execution of code through enjoyable debugging. Familiar with JS, MERN, Next, React Native, SQL, NoSQL and ready to adapt new learning curve in the future
 
 Currently I'm interested in Tauri and Solid.js as a replacement for Electron and React.js respectively. I want to build something with it in the near future.
 
