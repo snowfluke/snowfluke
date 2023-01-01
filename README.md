@@ -20,6 +20,6 @@ Started questioning my existence? my [personal portfolio](https://awala.me) migh
 
 - [A Tale of Reducing Expo/React Native Android Application](https://dev.to/awalariansyah/a-tale-of-reducing-expo-react-native-android-application-3cgb)
 
-# Hi, Mom!
+# Hi, Mom! Hope you're doing well
 
 Just a slipped thought, I personally prefer "Hi, Mom!" over "Hello World". Thanks to Lasha Kabadze for inspiring really cool portfolio template, I do a bit of tweaking. Really cool to see a well-done design pattern in the source code.
