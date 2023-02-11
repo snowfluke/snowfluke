@@ -8,7 +8,7 @@ Started questioning my existence? my [personal portfolio](https://awala.me) migh
 
 # Featured works
 
-- [iDekita](http://idekita.herokuapp.com/) - A platform to share and search for an open-source idea
+- [iDekita](https://github.com/snowfluke/idekita) - A platform to share and search for an open-source idea
 - [Presentia](http://presentia.stmikkomputama.ac.id/) - Online location-based attendance app
 - [Teledrop](https://youtu.be/dpr3RrLRehs) - Telegram bot for Airdrop automation
 - [Buku Saku TKJ](https://play.google.com/store/apps/details?id=com.bukusakutkj.sss) - Network Engineering student's guide book
