@@ -19,14 +19,14 @@ export default async function handler(
             description:
               "iDekita is a web-based application developed as a place to accommodate and search for creative ideas such as project ideas, research ideas, problem solving ideas and other creative ideas. Developed and won 1st award Techcomfest 2022 Politeknik Negeri Semarang",
             tech: "Next, Firebase, Tailwindcss",
-            link: "http://idekita.herokuapp.com/",
+            link: "https://github.com/snowfluke/idekita",
           },
           {
             title: "Presentia",
             description:
               "The third party service is a system that handles lecture attendance that integrates the discord bot (server) and the Presentia android mobile application (client) in its operation. Handling location mode attendance, online, sick, permission, deposit attendance, announcements, assignments and schedule changes in real time.",
             tech: "React Native, Firebase, Discord.js, PHP, Tailwindcss",
-            link: "http://presentia.stmikkomputama.ac.id/",
+            link: "https://github.com/snowfluke/Presentia",
           },
           {
             title: "Teledrop",
