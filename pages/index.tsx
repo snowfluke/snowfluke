@@ -28,9 +28,15 @@ export default function Home() {
             <br />
             What do I mean by <b>Adaptive</b>? I don't blame any environment, I
             adjust myself to suit it instead –{" fetch "}
-            <Link href="/CV Awal Ariansyah.pdf">
+            <Link href="/Awal Ariansyah - CV.pdf">
               <a target={"_blank"}>
-                <b>a fragment of my soul.</b>
+                <b>a fragment of my soul. </b>
+              </a>
+            </Link>{" "}
+            or see my{" "}
+            <Link href="/Awal Ariansyah - Project Portfolio.pdf">
+              <a target={"_blank"}>
+                <b>collection of wielded sword.</b>
               </a>
             </Link>
           </p>
