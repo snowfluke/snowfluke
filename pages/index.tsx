@@ -30,7 +30,7 @@ export default function Home() {
             adjust myself to suit it instead –{" fetch "}
             <Link href="/Awal Ariansyah - CV.pdf">
               <a target={"_blank"}>
-                <b>a fragment of my soul. </b>
+                <b>a fragment of my soul </b>
               </a>
             </Link>{" "}
             or see my{" "}

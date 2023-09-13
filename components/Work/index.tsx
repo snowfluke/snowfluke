@@ -11,15 +11,27 @@ export const Work = () => {
 
       <WorkWrapper>
         <Position>
-          <h3>Software Engineer @snow.exe</h3>
+          <h3>Frontend Mobile Developer @Anugerah Lestari Teknokreasi </h3>
         </Position>
         <Experience>
-          Sailing software world with a small team responsible for building
-          client-requested software in various platform and participated
-          competition.
+          Developing m‑banking app for Cirebon Bank in Android & iOS starts from
+          UI/UX Designing until to code it in React Native.
         </Experience>
       </WorkWrapper>
-      <span>May 2021 - present</span>
+      <span>Oct 2022 - Jan 2023</span>
+      <Divider />
+
+      <WorkWrapper>
+        <Position>
+          <h3>Backend Developer Internship @Rejeki Berkah Nusantara </h3>
+        </Position>
+        <Experience>
+          Internship to demonstrate migration from monolithic architecture into
+          micro‑services and building the frontend dashboard for business
+          intelligent langitpay.
+        </Experience>
+      </WorkWrapper>
+      <span>Jul 2022 - Aug 2022</span>
       <Divider />
 
       <WorkWrapper>
@@ -31,7 +43,7 @@ export const Work = () => {
           logo, banner for medium-low business in the countryside.
         </Experience>
       </WorkWrapper>
-      <span>Sep 2020 - Apr 2021</span>
+      <span>Aug 2020 - Jan 2021</span>
       <Divider />
 
       <WorkWrapper>
@@ -43,7 +55,7 @@ export const Work = () => {
           maintenance hardware and networking.
         </Experience>
       </WorkWrapper>
-      <span>Nov 2018 - Feb 2019</span>
+      <span>Nov 2018 - Jan 2019</span>
       <Divider />
     </>
   );
