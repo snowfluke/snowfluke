@@ -42,7 +42,7 @@ export const Footer = ({ darkTheme }: StringProps) => {
               <ExternalLink href="https://twitter.com/akasha_seeker">
                 Twitter
               </ExternalLink>
-              <ExternalLink href="https://instagram.com/alter.awaru">
+              <ExternalLink href="https://instagram.com/mencari_akhir/">
                 Instagram
               </ExternalLink>
               <ExternalLink href="https://www.youtube.com/channel/UChiE4jEOX06biZZqoa6Brkg">
