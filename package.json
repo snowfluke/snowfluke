@@ -1,0 +1,21 @@
+{
+  "name": "snowfluke",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Spreadsheet-themed portfolio and blog of Awal Ariansyah",
+  "type": "module",
+  "scripts": {
+    "blog": "node scripts/build-blog.mjs",
+    "resume": "node scripts/build-resume.mjs",
+    "dev": "node scripts/build-blog.mjs && python3 -m http.server 3000",
+    "test": "node --test tests/*.test.mjs",
+    "lint": "oxlint",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "check": "oxlint && oxfmt --check && node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.68.0",
+    "oxlint": "^1.83.0"
+  }
+}

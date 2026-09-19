@@ -1,0 +1,4 @@
+node_modules/
+.DS_Store
+# CV files hold a phone number and a photo. Keep them out of a public repo.
+references/
