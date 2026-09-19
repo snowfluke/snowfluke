@@ -1,10 +1,10 @@
 import * as actions from "./actions.js";
+import { t } from "./i18n.js";
 import * as store from "./state.js";
+import { cssColor } from "./theme.js";
 import { el } from "./utils.js";
 
 const { state } = store;
-const DEFAULT_TEXT_COLOR = "#32332f";
-const DEFAULT_FILL_COLOR = "#faf9f5";
 
 const needsEditable = (node) => (node.disabled = !store.isEditable());
 const divider = () => el("span", { class: "tool-divider", role: "separator" });
@@ -36,10 +36,10 @@ export function mountToolbar(root) {
     );
   }
 
-  function alignButton(label, value) {
+  function alignButton(label, title, value) {
     return button(
       label,
-      `Align ${value}`,
+      title,
       () => actions.setFormat("align", value),
       (node) => {
         needsEditable(node);
@@ -48,7 +48,7 @@ export function mountToolbar(root) {
     );
   }
 
-  function colorPicker(label, title, name, fallback) {
+  function colorPicker(label, title, name, token) {
     // "change" fires once when the picker closes. "input" would flood the undo history.
     const input = el("input", {
       type: "color",
@@ -57,7 +57,7 @@ export function mountToolbar(root) {
     });
     synced.push(() => {
       input.disabled = !store.isEditable();
-      input.value = store.activeCellData()?.style?.[name] ?? fallback;
+      input.value = store.activeCellData()?.style?.[name] ?? cssColor(token);
     });
     return el("label", { class: "tool swatch", title }, label, input);
   }
@@ -66,8 +66,8 @@ export function mountToolbar(root) {
     "select",
     {
       class: "tool",
-      "aria-label": "Zoom",
-      title: "Zoom",
+      "aria-label": t("tool.zoom"),
+      title: t("tool.zoom"),
       onchange: () => store.setView({ zoom: Number(zoom.value) }),
     },
     ...store.ZOOM_LEVELS.map((level) => el("option", { value: level }, `${level}%`)),
@@ -75,27 +75,37 @@ export function mountToolbar(root) {
   synced.push(() => (zoom.value = state.view.zoom));
 
   root.append(
-    button("undo", "Undo", store.undo, (node) => (node.disabled = !store.canUndo())),
-    button("redo", "Redo", store.redo, (node) => (node.disabled = !store.canRedo())),
-    button("print", "Print", () => window.print()),
+    button(
+      t("tool.undo"),
+      t("menu.undo"),
+      store.undo,
+      (node) => (node.disabled = !store.canUndo()),
+    ),
+    button(
+      t("tool.redo"),
+      t("menu.redo"),
+      store.redo,
+      (node) => (node.disabled = !store.canRedo()),
+    ),
+    button(t("tool.print"), t("menu.print"), () => window.print()),
     divider(),
     zoom,
     divider(),
-    formatToggle("B", "Bold", "bold", "tool-bold"),
-    formatToggle("I", "Italic", "italic", "tool-italic"),
-    formatToggle("U", "Underline", "underline", "tool-underline"),
-    formatToggle("S", "Strikethrough", "strike", "tool-strike"),
+    formatToggle("B", t("menu.bold"), "bold", "tool-bold"),
+    formatToggle("I", t("menu.italic"), "italic", "tool-italic"),
+    formatToggle("U", t("menu.underline"), "underline", "tool-underline"),
+    formatToggle("S", t("menu.strike"), "strike", "tool-strike"),
     divider(),
-    alignButton("left", "left"),
-    alignButton("center", "center"),
-    alignButton("right", "right"),
-    formatToggle("wrap", "Wrap text", "wrap"),
+    alignButton(t("tool.left"), t("menu.alignLeft"), "left"),
+    alignButton(t("tool.center"), t("menu.alignCenter"), "center"),
+    alignButton(t("tool.right"), t("menu.alignRight"), "right"),
+    formatToggle(t("tool.wrap"), t("menu.wrap"), "wrap"),
     divider(),
-    colorPicker("text", "Text color", "color", DEFAULT_TEXT_COLOR),
-    colorPicker("fill", "Fill color", "fill", DEFAULT_FILL_COLOR),
+    colorPicker(t("tool.text"), t("tool.textColor"), "color", "--ink"),
+    colorPicker(t("tool.fill"), t("tool.fillColor"), "fill", "--paper"),
     divider(),
-    button("link", "Link", actions.editLink, needsEditable),
-    button("clear", "Clear formatting", actions.clearFormatting, needsEditable),
+    button(t("tool.link"), t("menu.link"), actions.editLink, needsEditable),
+    button(t("tool.clear"), t("menu.clearFormatting"), actions.clearFormatting, needsEditable),
   );
 
   // A mouse click on a tool must not take focus from the grid, or the arrow keys stop working.

@@ -1,3 +1,4 @@
+import { t } from "./i18n.js";
 import { isEditable, state } from "./state.js";
 
 const FLASH_MS = 2600;
@@ -5,11 +6,9 @@ let node = null;
 let timer = 0;
 
 function steadyText() {
-  if (state.article) return "reading";
-  if (!isEditable()) return "read-only";
-  return state.saved
-    ? "saved in this browser"
-    : "storage blocked, changes stay until you close the tab";
+  if (state.article) return t("status.reading");
+  if (!isEditable()) return t("status.readOnly");
+  return t(state.saved ? "status.saved" : "status.blocked");
 }
 
 export function mountStatus(element) {
@@ -39,5 +38,4 @@ export function flashStatus(message) {
   }, FLASH_MS);
 }
 
-export const LOCKED_MESSAGE =
-  "This sheet is locked. File > Duplicate sheet gives you an editable copy.";
+export const lockedMessage = () => t("status.locked");

@@ -1,3 +1,4 @@
+import { t } from "./i18n.js";
 import * as store from "./state.js";
 import { el, parseKey } from "./utils.js";
 
@@ -7,14 +8,14 @@ export function mountFormulaBar(root) {
   const nameBox = el("input", {
     class: "name-box",
     type: "text",
-    "aria-label": "Cell reference",
+    "aria-label": t("formula.cellRef"),
     autocomplete: "off",
     spellcheck: "false",
   });
   const input = el("input", {
     class: "formula-input",
     type: "text",
-    "aria-label": "Cell content",
+    "aria-label": t("formula.content"),
     autocomplete: "off",
     spellcheck: "false",
   });
@@ -31,7 +32,7 @@ export function mountFormulaBar(root) {
     }
     nameBox.value = store.activeKey();
     input.value = store.activeCellData()?.value ?? "";
-    input.placeholder = store.isEditable() ? "Value or formula, for example =SUM(A1:A5)" : "";
+    input.placeholder = store.isEditable() ? t("formula.placeholder") : "";
   }
 
   // Typing "C5" and Enter in the name box jumps to that cell.

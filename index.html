@@ -9,7 +9,7 @@
       content="Awal Ariansyah. Backend engineer for OCR and computer vision systems. Portfolio, resume, and blog."
     />
     <meta name="author" content="Awal Ariansyah" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#faf9f5" />
     <meta
       property="og:title"
@@ -26,6 +26,16 @@
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="https://www.awala.my.id/" />
+    <link rel="alternate" hreflang="en" href="https://www.awala.my.id/?lang=en" />
+    <link rel="alternate" hreflang="id" href="https://www.awala.my.id/?lang=id" />
+    <link rel="alternate" hreflang="x-default" href="https://www.awala.my.id/" />
+    <script>
+      // Runs before the first paint, so a saved theme never flashes the other one.
+      try {
+        const theme = JSON.parse(localStorage.getItem("snowfluke.sheets.v1"))?.view?.theme;
+        if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+      } catch {}
+    </script>
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23faf9f5'/%3E%3Cpath d='M0 5.5h16M0 10.5h16M5.5 0v16M10.5 0v16' stroke='%23cbc9be'/%3E%3Crect x='5.5' y='5.5' width='5' height='5' fill='none' stroke='%23006fe6' stroke-width='1.5'/%3E%3C/svg%3E"
@@ -48,22 +58,52 @@
     <div class="app" id="app">
       <header class="menubar">
         <a class="brand" href="#/about">Awal Ariansyah</a>
-        <nav class="menus" id="menus" aria-label="Menu bar"></nav>
+        <nav class="menus" id="menus" aria-label="Menu bar" data-i18n-aria="aria.menubar"></nav>
         <p class="status" id="status" role="status" aria-live="polite"></p>
-        <div class="downloads" aria-label="Downloads">
-          <span class="downloads-label">download</span>
-          <button type="button" id="download-xlsx" title="Download this workbook as XLSX">
-            [ xlsx ]
-          </button>
-          <a href="downloads/awal-ariansyah-resume.pdf" download title="Download my resume as PDF"
-            >[ pdf ]</a
+        <div class="downloads" aria-label="Downloads and display" data-i18n-aria="aria.downloads">
+          <span class="downloads-label" data-i18n="header.download">download</span>
+          <button
+            type="button"
+            id="download-xlsx"
+            title="Download this workbook as XLSX"
+            data-i18n-title="header.xlsx.title"
           >
+            xlsx
+          </button>
+          <a
+            id="download-pdf"
+            href="downloads/awal-ariansyah-resume.pdf"
+            download
+            title="Download my resume as PDF"
+            data-i18n-title="header.pdf.title"
+            >pdf</a
+          >
+          <span class="header-divider" aria-hidden="true"></span>
+          <button type="button" id="switch-lang" data-i18n-title="header.lang.title"></button>
+          <button
+            type="button"
+            id="switch-theme"
+            title="Switch between light and dark"
+            data-i18n-title="header.theme.title"
+          ></button>
         </div>
       </header>
-      <div class="toolbar" id="toolbar" role="toolbar" aria-label="Formatting"></div>
+      <div
+        class="toolbar"
+        id="toolbar"
+        role="toolbar"
+        aria-label="Formatting"
+        data-i18n-aria="aria.toolbar"
+      ></div>
       <div class="formulabar" id="formulabar"></div>
       <main class="workbench">
-        <div class="grid-scroll" id="grid" tabindex="0" aria-label="Spreadsheet"></div>
+        <div
+          class="grid-scroll"
+          id="grid"
+          tabindex="0"
+          aria-label="Spreadsheet"
+          data-i18n-aria="aria.grid"
+        ></div>
         <article class="article" id="article" hidden></article>
       </main>
       <footer class="tabs" id="tabs"></footer>

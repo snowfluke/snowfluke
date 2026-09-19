@@ -1,4 +1,6 @@
-/* Design tokens. Palette and type follow gpu-lexer.vercel.app: warm paper, dashed rules, one accent. */
+/* Design tokens. Palette and type follow gpu-lexer.vercel.app: warm paper, dashed rules, one accent.
+   Theme: the system setting decides, unless <html data-theme="light|dark"> forces one.
+   The dark values appear twice (media query and attribute). CSS has no way to share them. */
 :root {
   color-scheme: light;
 
@@ -12,6 +14,9 @@
   --accent: #006fe6;
   --accent-soft: #e3eefb;
   --danger: #b3261e;
+  --range-tint: rgb(0 111 230 / 12%);
+  --shadow: rgb(17 18 15 / 8%);
+  --backdrop: rgb(17 18 15 / 35%);
 
   --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --text-xs: 0.75rem;
@@ -30,4 +35,40 @@
   --rule-bright: 1px dashed var(--line-bright);
   --cell-height: 28px;
   --bar-height: 2.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #161613;
+    --paper-raised: #1f1f1b;
+    --ink: #d6d4c8;
+    --ink-strong: #f6f4ea;
+    --muted: #9a988c;
+    --line: #3a3a33;
+    --line-bright: #5a594e;
+    --accent: #5aa9ff;
+    --accent-soft: #14283e;
+    --danger: #ff8a80;
+    --range-tint: rgb(90 169 255 / 18%);
+    --shadow: rgb(0 0 0 / 40%);
+    --backdrop: rgb(0 0 0 / 60%);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #161613;
+  --paper-raised: #1f1f1b;
+  --ink: #d6d4c8;
+  --ink-strong: #f6f4ea;
+  --muted: #9a988c;
+  --line: #3a3a33;
+  --line-bright: #5a594e;
+  --accent: #5aa9ff;
+  --accent-soft: #14283e;
+  --danger: #ff8a80;
+  --range-tint: rgb(90 169 255 / 18%);
+  --shadow: rgb(0 0 0 / 40%);
+  --backdrop: rgb(0 0 0 / 60%);
 }

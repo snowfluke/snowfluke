@@ -34,7 +34,7 @@ The parser supports headings, lists, fenced code, quotes, tables, rules, links, 
 
 ## Change the portfolio
 
-Edit `js/data/portfolio.js`. Each sheet is a list of rows. These sheets are locked in the UI.
+Edit the words in `js/data/content.en.js` and `js/data/content.id.js`. Edit links, numbers and layout in `js/data/portfolio.js`. These sheets are locked in the UI.
 
 - Keep the story of a sheet in columns A and B. A phone fits those two columns to the screen and wraps every cell.
 - The GitHub numbers are a snapshot. Refresh them with `gh`, then update `STATS_DATE`.
@@ -48,9 +48,25 @@ The header has two downloads.
 - `[ xlsx ]` builds the workbook in the browser with `js/xlsx.js`. It holds every sheet, with formulas, links, bold, wrap, and column widths.
 - `[ pdf ]` serves `downloads/awal-ariansyah-resume.pdf`.
 
-The resume source is `resume.html` with `css/resume.css`. After an edit, run `npm run resume`. The script prints the page with a headless Chrome and fails if the result is not one A4 page. Commit the PDF.
+The resume sources are `resume.html` and `resume-id.html` with `css/resume.css`. The `[ pdf ]` button serves the file that matches the language. After an edit, run `npm run resume`. The script prints both pages with a headless Chrome and fails if a result is not one A4 page. Commit the PDF.
 
 The resume repeats facts from `js/data/portfolio.js`. When you change one, change the other.
+
+## Languages
+
+The site speaks English and Indonesian. The language comes from `?lang=` in the URL, then the saved choice, then the browser. A switch saves the choice and reloads the page, because menus and sheets build their text once. `https://www.awala.my.id/?lang=id` is a link you can share.
+
+| What           | English                 | Indonesian              |
+| -------------- | ----------------------- | ----------------------- |
+| Interface text | `js/locales/en.js`      | `js/locales/id.js`      |
+| Portfolio text | `js/data/content.en.js` | `js/data/content.id.js` |
+| Resume         | `resume.html`           | `resume-id.html`        |
+
+`js/data/portfolio.js` holds the structure, the links and the numbers once, for both languages. `tests/i18n.test.mjs` fails when a key, a list length, a placeholder or a number differs between the two languages. The resumes have no such test, so change both by hand. A blog post stays in the language you write it in.
+
+## Theme
+
+`css/tokens.css` defines light and dark tokens. The system setting decides until the visitor picks a theme in the header or the View menu. An inline script in `index.html` applies a saved theme before the first paint. Print always uses the light tokens. Add no color outside `css/tokens.css`.
 
 ## How the data moves
 

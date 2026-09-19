@@ -1,0 +1,202 @@
+<!doctype html>
+<!--
+  Resume A4 satu halaman, versi Bahasa Indonesia. Sumber downloads/awal-ariansyah-resume-id.pdf.
+  Keep this file in step with resume.html: same facts, same order.
+  After an edit, run: npm run resume
+  Format rules (Stanford career education): one page, newest first, every bullet starts with
+  an action verb, numbers where they are true, no pronouns, no photo, no personal data.
+-->
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Awal Ariansyah - Resume - Backend Engineer, OCR dan Computer Vision</title>
+    <meta
+      name="description"
+      content="Resume Awal Ariansyah, backend engineer untuk sistem OCR dan computer vision."
+    />
+    <link rel="stylesheet" href="css/resume.css" />
+  </head>
+  <body>
+    <nav class="screen-only">
+      <a href="./?lang=id">[ kembali ke spreadsheet ]</a>
+      <a href="resume">[ english ]</a>
+      <a href="downloads/awal-ariansyah-resume-id.pdf" download>[ unduh pdf ]</a>
+    </nav>
+
+    <main class="page">
+      <header>
+        <h1>Awal Ariansyah</h1>
+        <p class="headline">Backend Engineer - Sistem OCR dan Computer Vision</p>
+        <p class="proof">
+          Pembuat SDK OCR dengan 75.000+ unduhan npm per bulan. Produk OCR berjalan di production
+          pada 2 perusahaan klien.
+        </p>
+        <p class="contact">
+          Jakarta, Indonesia (UTC+7). Terbuka untuk kerja remote. Notice period: 1 bulan.
+        </p>
+        <p class="contact">
+          <a href="mailto:awalariansyah7@gmail.com">awalariansyah7@gmail.com</a>
+          <span>|</span> <a href="https://github.com/snowfluke">github.com/snowfluke</a>
+          <span>|</span>
+          <a href="https://www.linkedin.com/in/awalariansyah/">linkedin.com/in/awalariansyah</a>
+          <span>|</span> <a href="https://www.awala.my.id/">awala.my.id</a>
+        </p>
+      </header>
+
+      <section>
+        <h2>Pengalaman Kerja</h2>
+
+        <div class="entry">
+          <p>
+            <b>PT. Perkasa Pilar Utama</b>, vendor IT enterprise B2B <span>|</span> Jakarta Utara,
+            Indonesia
+          </p>
+          <p>
+            <i>Backend Engineer dan Team Lead, divisi custom software</i> <span>|</span> Okt 2023 -
+            Sekarang
+          </p>
+          <ul>
+            <li>
+              Memimpin tim 3 engineer di divisi custom software, melatih engineer baru, dan
+              mengarahkan tim eksperimen AI di bidang LLM dan computer vision.
+            </li>
+            <li>
+              Merancang dan membangun Oksara, produk OCR perusahaan, dari awal sampai akhir dengan
+              TypeScript, Bun, dan ONNX Runtime. Oksara berjalan di production pada 2 perusahaan
+              klien dan mengekstrak data dari 5 jenis dokumen: KTP, BPKB, struk, CV, dan rekening
+              koran.
+            </li>
+            <li>
+              Merilis inti OCR dan image processing Oksara sebagai open source: ppu-paddle-ocr dan
+              ppu-ocv. Masing-masing kini diunduh 75.000+ kali per bulan di npm.
+            </li>
+            <li>
+              Membangun platform rekonsiliasi pembayaran, kini di production, dengan Go dan 3
+              service (API gateway, scheduler, data collector) di atas PostgreSQL, RabbitMQ, dan
+              Redis, dipantau dengan Prometheus dan Grafana.
+            </li>
+            <li>
+              Membuat prototipe R&amp;D (Mar - Sep 2024): aplikasi Android dengan Kotlin yang
+              mengirim pesan terenkripsi dan terkompresi lewat radio jarak jauh LoRa tanpa internet.
+            </li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <p>
+            <b>PT. BPR Bank Cirebon Jabar (Perseroda)</b>, bank daerah <span>|</span> Cirebon,
+            Indonesia
+          </p>
+          <p>
+            <i>Mobile Frontend Developer (kontrak 3 bulan)</i> <span>|</span> Des 2022 - Feb 2023
+          </p>
+          <ul>
+            <li>
+              Mendesain dan membuat prototipe aplikasi mobile banking dengan 40+ layar di Figma.
+            </li>
+            <li>
+              Mengimplementasikan aplikasi untuk Android dan iOS dengan React Native,
+              mengintegrasikannya dengan backend bank, dan merilisnya ke nasabah bank.
+            </li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <p>
+            <b>PT. Langitpay Digital Indonesia</b>, pembayaran digital <span>|</span> Cilacap,
+            Indonesia
+          </p>
+          <p><i>Backend Developer Intern</i> <span>|</span> 2022</p>
+          <ul>
+            <li>
+              Memigrasikan aplikasi web monolitik berbasis SQL ke aplikasi web berbasis NoSQL.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Open Source <span class="as-of">(angka npm dan GitHub per Sep 2026)</span></h2>
+        <ul>
+          <li>
+            <a href="https://github.com/PT-Perkasa-Pilar-Utama/ppu-paddle-ocr"
+              ><b>ppu-paddle-ocr</b></a
+            >: membuat SDK PaddleOCR dengan TypeScript untuk Node.js, Bun, Deno, browser, dan React
+            Native. 75.000+ unduhan npm per bulan, 185.000+ secara total, 136 GitHub stars, 35
+            rilis. Membaca satu struk dalam sekitar 140 ms dengan akurasi karakter 99,5% pada
+            benchmark yang dipublikasikan.
+          </li>
+          <li>
+            <a href="https://github.com/PT-Perkasa-Pilar-Utama/ppu-ocv"><b>ppu-ocv</b></a
+            >: membuat library image processing yang chainable di atas OpenCV.js. 76.000+ unduhan
+            npm per bulan.
+          </li>
+          <li>
+            <a href="https://github.com/PT-Perkasa-Pilar-Utama/ppu-yolo-onnx-inference"
+              ><b>ppu-yolo-onnx-inference</b></a
+            >, <a href="https://github.com/PT-Perkasa-Pilar-Utama/ppu-pdf"><b>ppu-pdf</b></a
+            >,
+            <a href="https://github.com/PT-Perkasa-Pilar-Utama/ppu-doclayout"
+              ><b>ppu-doclayout</b></a
+            >, <a href="https://github.com/PT-Perkasa-Pilar-Utama/ppu-uniface"><b>ppu-uniface</b></a
+            >: merilis library TypeScript untuk deteksi objek, ekstraksi teks PDF, analisis layout
+            dokumen, dan pengenalan wajah.
+          </li>
+          <li>
+            <a href="https://github.com/PT-Perkasa-Pilar-Utama/testate"><b>testate</b></a
+            >: merilis alat snapshot dan restore untuk database testing dengan Hono dan SolidJS.
+          </li>
+          <li>
+            <a href="https://github.com/snowfluke/indo-g2p"><b>indo-g2p</b></a
+            >: menulis konverter grapheme-to-phoneme Bahasa Indonesia untuk text-to-speech, tanpa
+            dependency.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Pendidikan</h2>
+        <div class="entry">
+          <p>
+            <b>STMIK Komputama Majenang</b>, Sarjana Teknik Informatika <span>|</span> Jan 2019 -
+            Des 2023
+          </p>
+          <ul>
+            <li>
+              Juara 1 Techcomfest 2022 Software Development Competition (Politeknik Negeri
+              Semarang), serta juara 2 dan juara 3 di dua kompetisi teknologi antaruniversitas
+              lainnya. Total 9 prestasi kompetisi, 2017 - 2023.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Keahlian</h2>
+        <p class="skill">
+          <b>Bahasa pemrograman:</b> TypeScript, JavaScript, Go, Python, Kotlin, SQL
+        </p>
+        <p class="skill">
+          <b>Backend:</b> Bun, Node.js, Hono, Elysia, Fiber, Express, REST dan OpenAPI, WebSocket,
+          microservices
+        </p>
+        <p class="skill">
+          <b>Data:</b> PostgreSQL, MongoDB, SQLite, Redis, RabbitMQ, Drizzle ORM, S3
+        </p>
+        <p class="skill">
+          <b>Vision dan AI:</b> ONNX Runtime, PaddleOCR, YOLO, OpenCV.js, face recognition, WASM
+          SIMD, bot LLM, server MCP
+        </p>
+        <p class="skill">
+          <b>Frontend dan mobile:</b> React, Next.js, SolidJS, Tailwind CSS, React Native, Android
+          dengan Kotlin, Figma
+        </p>
+        <p class="skill">
+          <b>Operasional:</b> Linux, Docker, GitHub Actions, Nginx, Prometheus, Grafana, Loki
+        </p>
+        <p class="skill"><b>Bahasa:</b> Indonesia (penutur asli), Inggris (fasih)</p>
+      </section>
+    </main>
+  </body>
+</html>

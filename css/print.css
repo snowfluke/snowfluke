@@ -48,3 +48,18 @@ dialog {
   background: var(--paper-raised);
   font-weight: 400;
 }
+
+/* Paper is white. A dark theme on screen must not print a black page. */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: light;
+  --paper: #fff;
+  --paper-raised: #f3f2ec;
+  --ink: #32332f;
+  --ink-strong: #11120f;
+  --muted: #72736b;
+  --line: #cbc9be;
+  --line-bright: #a9a79c;
+  --accent: #006fe6;
+  --accent-soft: #e3eefb;
+}

@@ -1,3 +1,4 @@
+import { t } from "./i18n.js";
 import { el } from "./utils.js";
 
 const dialog = document.getElementById("dialog");
@@ -21,7 +22,7 @@ function open(title, body, buttons) {
 
 // Not a submit button. Enter in a text input fires the first submit button, which must be OK.
 const cancelButton = () =>
-  el("button", { type: "button", onclick: () => dialog.close("") }, "Cancel");
+  el("button", { type: "button", onclick: () => dialog.close("") }, t("dialog.cancel"));
 const okButton = (label, danger) =>
   el(
     "button",
@@ -32,7 +33,13 @@ const okButton = (label, danger) =>
 export const isDialogOpen = () => dialog.open;
 
 // Resolves with the typed text, or null when cancelled.
-export async function ask({ title, label, value = "", placeholder = "", confirmLabel = "OK" }) {
+export async function ask({
+  title,
+  label,
+  value = "",
+  placeholder = "",
+  confirmLabel = t("dialog.ok"),
+}) {
   const input = el("input", {
     type: "text",
     name: "answer",
@@ -57,5 +64,5 @@ export async function confirmAction({ title, message, confirmLabel }) {
 }
 
 export function inform({ title, body }) {
-  return open(title, body, [okButton("Close")]);
+  return open(title, body, [okButton(t("dialog.close"))]);
 }

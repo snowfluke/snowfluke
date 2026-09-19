@@ -1,20 +1,21 @@
 import * as actions from "./actions.js";
 import { go } from "./router.js";
+import { t } from "./i18n.js";
 import * as store from "./state.js";
 import { el } from "./utils.js";
 
 const { state } = store;
 
 export function mountTabs(root) {
-  const list = el("div", { class: "tab-list", role: "tablist", "aria-label": "Sheets" });
+  const list = el("div", { class: "tab-list", role: "tablist", "aria-label": t("aria.sheets") });
   root.append(
     el(
       "button",
       {
         type: "button",
         class: "tab-add",
-        title: "New sheet",
-        "aria-label": "New sheet",
+        title: t("tabs.new"),
+        "aria-label": t("tabs.new"),
         onclick: actions.newSheet,
       },
       "+",
@@ -31,7 +32,7 @@ export function mountTabs(root) {
         class: "tab",
         role: "tab",
         "aria-selected": String(active),
-        title: sheet.locked ? `${sheet.name} (locked)` : `${sheet.name}. Double-click to rename.`,
+        title: t(sheet.locked ? "tabs.locked" : "tabs.rename", { name: sheet.name }),
         onclick: () => (!active || state.article) && go(sheet.id),
         ondblclick: () => actions.renameSheet(sheet.id),
       },
@@ -43,8 +44,8 @@ export function mountTabs(root) {
       {
         type: "button",
         class: "tab-remove",
-        title: `Delete ${sheet.name}`,
-        "aria-label": `Delete ${sheet.name}`,
+        title: t("tabs.delete", { name: sheet.name }),
+        "aria-label": t("tabs.delete", { name: sheet.name }),
         onclick: () => actions.deleteSheet(sheet.id),
       },
       "x",

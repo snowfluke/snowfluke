@@ -1,18 +1,22 @@
 import { BLOG_ID, loadArticle, readingMinutes } from "./blog.js";
+import { t } from "./i18n.js";
 import * as store from "./state.js";
 import { el } from "./utils.js";
 
 const { state } = store;
-const SITE_TITLE = document.title;
+const SITE_TITLE = t("page.title");
 
-const backLink = () =>
-  el("a", { class: "article-back", href: `#/${BLOG_ID}` }, "[ back to the Blog sheet ]");
+const backLink = () => el("a", { class: "article-back", href: `#/${BLOG_ID}` }, t("article.back"));
 
 export function mountArticle(root) {
   let shown = null;
 
   function renderArticle({ meta, html, words }) {
-    const details = [meta.date, meta.category, `${readingMinutes(words)} min read`]
+    const details = [
+      meta.date,
+      meta.category,
+      t("blog.minutesRead", { minutes: readingMinutes(words) }),
+    ]
       .filter(Boolean)
       .join(" / ");
     const body = el("div", { class: "article-body" });
@@ -47,12 +51,8 @@ export function mountArticle(root) {
         "div",
         { class: "article-page" },
         backLink(),
-        el("h1", {}, "Post not found"),
-        el(
-          "p",
-          {},
-          `No post loads from blog/${slug}.md. Check the link, or run "npm run blog" after you add a post.`,
-        ),
+        el("h1", {}, t("article.missing.title")),
+        el("p", {}, t("article.missing.body", { slug })),
       ),
     );
   }
@@ -60,7 +60,11 @@ export function mountArticle(root) {
   async function show(slug) {
     shown = slug;
     root.replaceChildren(
-      el("div", { class: "article-page" }, el("p", { class: "article-meta" }, "Loading...")),
+      el(
+        "div",
+        { class: "article-page" },
+        el("p", { class: "article-meta" }, t("article.loading")),
+      ),
     );
     root.scrollTop = 0;
     try {

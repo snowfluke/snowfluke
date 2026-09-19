@@ -1,9 +1,10 @@
 import * as actions from "./actions.js";
 import { fillClipboardEvent } from "./clipboard.js";
 import { isDialogOpen } from "./dialog.js";
+import { t } from "./i18n.js";
 import { DEFAULT_COL_WIDTH, MIN_COL_WIDTH } from "./sheet.js";
 import * as store from "./state.js";
-import { LOCKED_MESSAGE, flashStatus } from "./status.js";
+import { flashStatus, lockedMessage } from "./status.js";
 import { cellKey, clamp, columnLetter, el, isExternalUrl, safeUrl } from "./utils.js";
 
 const { state } = store;
@@ -170,12 +171,12 @@ export function mountGrid(root) {
 
   function startEdit(initialText) {
     if (editor) return;
-    if (!store.isEditable()) return flashStatus(LOCKED_MESSAGE);
+    if (!store.isEditable()) return flashStatus(lockedMessage());
     const td = cellNode(state.activeCell.row, state.activeCell.col);
     const input = el("input", {
       class: "cell-editor",
       type: "text",
-      "aria-label": `Edit ${store.activeKey()}`,
+      "aria-label": t("grid.edit", { cell: store.activeKey() }),
       autocomplete: "off",
       spellcheck: "false",
     });
@@ -375,14 +376,14 @@ export function mountGrid(root) {
   document.addEventListener("cut", (event) => {
     if (!gridHasKeys(event)) return;
     const copied = store.cutSelection();
-    if (copied === null) return flashStatus(LOCKED_MESSAGE);
+    if (copied === null) return flashStatus(lockedMessage());
     fillClipboardEvent(event, copied);
   });
 
   document.addEventListener("paste", (event) => {
     if (!gridHasKeys(event)) return;
     event.preventDefault();
-    if (!store.isEditable()) return flashStatus(LOCKED_MESSAGE);
+    if (!store.isEditable()) return flashStatus(lockedMessage());
     store.pasteText(event.clipboardData.getData("text/plain"));
   });
 

@@ -46,7 +46,7 @@
   padding: var(--space-1) 0;
   border: var(--rule-bright);
   background: var(--paper);
-  box-shadow: 4px 4px 0 rgb(17 18 15 / 8%);
+  box-shadow: 4px 4px 0 var(--shadow);
 }
 
 .menu-item {
@@ -127,6 +127,23 @@
   white-space: nowrap;
 }
 
+.header-divider {
+  align-self: stretch;
+  margin: var(--space-2) 0;
+  border-left: var(--rule-bright);
+}
+
+/* The brackets are decoration. A phone drops them so four controls fit beside the name. */
+.downloads button::before,
+.downloads a::before {
+  content: "[ ";
+}
+
+.downloads button::after,
+.downloads a::after {
+  content: " ]";
+}
+
 .downloads button:hover,
 .downloads a:hover {
   color: var(--ink-strong);
@@ -139,8 +156,26 @@
   }
 
   .downloads-label,
+  .header-divider,
   .status:not(.flash) {
     display: none;
+  }
+
+  /* Four controls share the first row with the name. */
+  .downloads {
+    gap: 0;
+  }
+
+  .downloads button,
+  .downloads a {
+    padding: var(--space-2) 5px;
+  }
+
+  .downloads button::before,
+  .downloads a::before,
+  .downloads button::after,
+  .downloads a::after {
+    content: none;
   }
 
   .status.flash {

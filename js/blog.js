@@ -1,3 +1,4 @@
+import { t } from "./i18n.js";
 import { renderMarkdown, parseFrontmatter } from "./markdown.js";
 import { header, linked, sheetFromRows, wrapped } from "./sheet.js";
 
@@ -14,15 +15,21 @@ export function blogSheet(posts, note) {
     post.date,
     { ...linked(post.title, articleHash(post.slug)), bold: true },
     post.category,
-    `${readingMinutes(post.words)} min`,
+    t("blog.minutes", { minutes: readingMinutes(post.words) }),
     wrapped(post.excerpt),
   ]);
   return sheetFromRows({
     id: BLOG_ID,
-    name: "Blog",
+    name: t("blog.sheet"),
     colWidths: [130, 420, 160, 90, 620],
     rows: [
-      [header("Date"), header("Title"), header("Category"), header("Read"), header("Excerpt")],
+      [
+        header(t("blog.date")),
+        header(t("blog.title")),
+        header(t("blog.category")),
+        header(t("blog.read")),
+        header(t("blog.excerpt")),
+      ],
       ...(note ? [[null, { value: note, italic: true }]] : rows),
     ],
     rowCount: Math.max(rows.length + 15, 30),

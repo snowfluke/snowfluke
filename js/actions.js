@@ -1,11 +1,13 @@
 // User commands. Menus, toolbar and keyboard shortcuts all call these.
 import { ask, confirmAction, inform } from "./dialog.js";
+import { lang, plural, t } from "./i18n.js";
 import { go } from "./router.js";
 import { RESUME_PDF } from "./data/portfolio.js";
 import { toCsv } from "./sheet.js";
 import { writeClipboard } from "./clipboard.js";
 import * as store from "./state.js";
-import { LOCKED_MESSAGE, flashStatus } from "./status.js";
+import { flashStatus } from "./status.js";
+import { effectiveTheme } from "./theme.js";
 import { el, safeUrl } from "./utils.js";
 import { buildXlsx } from "./xlsx.js";
 
@@ -13,7 +15,7 @@ const { state } = store;
 
 function requireEditable() {
   if (store.isEditable()) return true;
-  flashStatus(state.article ? "Open a sheet to edit cells." : LOCKED_MESSAGE);
+  flashStatus(t(state.article ? "status.openSheet" : "status.locked"));
   return false;
 }
 
@@ -24,23 +26,23 @@ export const duplicateActiveSheet = () => go(store.duplicateSheet(state.activeId
 
 export async function renameSheet(id = state.activeId) {
   const sheet = store.findSheet(id);
-  if (sheet.locked) return flashStatus("Portfolio sheets keep their names.");
+  if (sheet.locked) return flashStatus(t("status.keepNames"));
   const name = await ask({
-    title: "Rename sheet",
-    label: "Name",
+    title: t("rename.title"),
+    label: t("rename.label"),
     value: sheet.name,
-    confirmLabel: "Rename",
+    confirmLabel: t("rename.confirm"),
   });
   if (name !== null) store.renameSheet(id, name);
 }
 
 export async function deleteSheet(id = state.activeId) {
   const sheet = store.findSheet(id);
-  if (sheet.locked) return flashStatus("Portfolio sheets stay. You can delete your own sheets.");
+  if (sheet.locked) return flashStatus(t("status.keepSheets"));
   const confirmed = await confirmAction({
-    title: "Delete sheet",
-    message: `Delete "${sheet.name}"? Edit > Undo brings it back until you close the tab.`,
-    confirmLabel: "Delete",
+    title: t("delete.title"),
+    message: t("delete.message", { name: sheet.name }),
+    confirmLabel: t("delete.confirm"),
   });
   if (!confirmed) return;
   const index = state.sheets.indexOf(sheet);
@@ -76,16 +78,33 @@ export function downloadXlsx() {
 
 export const downloadResume = () => el("a", { href: RESUME_PDF, download: "" }).click();
 
+// ---- display ----
+
+// theme is "system", "light" or "dark". js/main.js applies state.view.theme on every change.
+export const setTheme = (theme) => store.setView({ theme });
+export const toggleTheme = () => setTheme(effectiveTheme() === "dark" ? "light" : "dark");
+
+// Text is built once at start, so a new language needs a reload. The ?lang= parameter must
+// go, or it would win over the saved choice on the next load.
+export function setLanguage(next) {
+  if (next === lang) return;
+  store.setView({ lang: next });
+  const url = new URL(location.href);
+  url.searchParams.delete("lang");
+  if (url.href === location.href) location.reload();
+  else location.replace(url.href);
+}
+
 export async function clearStorage() {
   const count = store.userSheets().length;
   const confirmed = await confirmAction({
-    title: "Clear storage",
-    message: `This deletes ${count} sheet${count === 1 ? "" : "s"} you made and your view settings from this browser. You cannot undo it.`,
-    confirmLabel: "Clear storage",
+    title: t("clear.title"),
+    message: plural("clear.message", count),
+    confirmLabel: t("clear.confirm"),
   });
   if (!confirmed) return;
   store.clearStorage();
-  flashStatus("Storage cleared.");
+  flashStatus(t("status.cleared"));
 }
 
 // ---- cells ----
@@ -95,41 +114,34 @@ export const setFormat = (name, value) => requireEditable() && store.setStyle(na
 export const clearFormatting = () => requireEditable() && store.clearFormatting();
 export const clearCells = () => requireEditable() && store.clearSelection();
 export const growSheet = (rows, cols) =>
-  requireEditable() &&
-  (store.growSheet(rows, cols) || flashStatus("This sheet is at its size limit."));
+  requireEditable() && (store.growSheet(rows, cols) || flashStatus(t("status.sizeLimit")));
 
 export async function editLink() {
   if (!requireEditable()) return;
   const current = store.activeCellData()?.style?.link ?? "";
   const url = await ask({
-    title: "Link",
-    label: "URL. Leave empty to remove the link.",
+    title: t("link.title"),
+    label: t("link.label"),
     value: current,
     placeholder: "https://",
-    confirmLabel: "Apply",
+    confirmLabel: t("link.confirm"),
   });
   if (url === null) return;
   store.setStyle("link", url.trim() ? safeUrl(url) : undefined);
 }
 
-const cellCount = (count) => `${count} cell${count === 1 ? "" : "s"}`;
-
 export async function copy() {
   if (state.article) return;
   const copied = store.copySelection();
   const done = await writeClipboard(copied);
-  flashStatus(
-    done
-      ? `Copied ${cellCount(copied.count)}. Paste it anywhere.`
-      : "The browser blocked the clipboard.",
-  );
+  flashStatus(done ? plural("copied", copied.count) : t("status.clipboardBlocked"));
 }
 
 export async function cut() {
   if (!requireEditable()) return;
   const copied = store.cutSelection();
   await writeClipboard(copied);
-  flashStatus(`Cut ${cellCount(copied.count)}.`);
+  flashStatus(plural("cut", copied.count));
 }
 
 // The menu item reads the system clipboard when the browser allows it. Ctrl+V does not come
@@ -149,62 +161,52 @@ export const selectAll = () => state.article || store.selectAll();
 
 // ---- help ----
 
-const SHORTCUTS = [
-  ["Arrow keys, Tab", "Move the selection"],
-  ["Shift+arrows, Shift+click, drag", "Select a range"],
-  ["Click a row or column header", "Select the row or column"],
-  ["Ctrl+A", "Select all used cells"],
-  ["Enter, F2, or type", "Edit the cell"],
-  ["Esc", "Cancel the edit"],
-  ["Delete", "Clear the selected cells"],
-  ["Ctrl+Z, Ctrl+Y", "Undo, redo"],
-  ["Ctrl+B, Ctrl+I, Ctrl+U", "Bold, italic, underline"],
-  ["Ctrl+K", "Add a link"],
-  ["Ctrl+C, Ctrl+X, Ctrl+V", "Copy, cut, paste. Works with Excel, Sheets and mail."],
+// [keys, description]. A key list with words in it has its own translation key.
+const shortcuts = () => [
+  [t("help.keys.move"), t("help.move")],
+  [t("help.keys.range"), t("help.range")],
+  [t("help.keys.header"), t("help.header")],
+  ["Ctrl+A", t("help.all")],
+  [t("help.keys.editCell"), t("help.editCell")],
+  ["Esc", t("help.cancel")],
+  ["Delete", t("help.clear")],
+  ["Ctrl+Z, Ctrl+Y", t("help.undo")],
+  ["Ctrl+B, Ctrl+I, Ctrl+U", t("help.format")],
+  ["Ctrl+K", t("help.link")],
+  ["Ctrl+C, Ctrl+X, Ctrl+V", t("help.clipboard")],
 ];
 
 export function showShortcuts() {
-  const rows = SHORTCUTS.map(([keys, what]) =>
+  const rows = shortcuts().map(([keys, what]) =>
     el("tr", {}, el("th", { scope: "row" }, keys), el("td", {}, what)),
   );
   inform({
-    title: "Keyboard shortcuts",
+    title: t("help.shortcuts.title"),
     body: [
       el("table", { class: "shortcuts" }, el("tbody", {}, ...rows)),
-      el("p", {}, "On a Mac, use Cmd in place of Ctrl."),
+      el("p", {}, t("help.shortcuts.mac")),
     ],
   });
 }
 
 export function showFormulaHelp() {
   inform({
-    title: "Formulas",
+    title: t("help.formulas.title"),
     body: [
-      el("p", {}, "Start a cell with = to compute a value."),
+      el("p", {}, t("help.formulas.intro")),
       el(
         "pre",
         {},
         "=A1+B2*2\n=(A1-A2)/A3\n=2^10\n=SUM(A1:A10)\n=AVERAGE(A1:B5)\n=MIN(A1:A5) + MAX(A1:A5)\n=COUNT(A1:C9)",
       ),
-      el("p", {}, "Errors: #DIV/0! #REF! #NAME? #VALUE! #CIRC! #ERROR!"),
+      el("p", {}, t("help.formulas.errors")),
     ],
   });
 }
 
 export function showAbout() {
   inform({
-    title: "About this site",
-    body: [
-      el(
-        "p",
-        {},
-        "Portfolio and blog of Awal Ariansyah. Plain HTML, CSS and JavaScript modules. No framework, no bundler.",
-      ),
-      el(
-        "p",
-        {},
-        "Sheets you add stay in your browser's localStorage. Nothing leaves your device.",
-      ),
-    ],
+    title: t("help.about.title"),
+    body: [el("p", {}, t("help.about.what")), el("p", {}, t("help.about.privacy"))],
   });
 }

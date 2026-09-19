@@ -361,7 +361,7 @@ dialog {
 }
 
 dialog::backdrop {
-  background: rgb(17 18 15 / 35%);
+  background: var(--backdrop);
 }
 
 .dialog-form {

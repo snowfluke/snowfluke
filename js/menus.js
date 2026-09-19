@@ -1,5 +1,6 @@
 // Menu definitions. Each item: { label, run, shortcut?, enabled?, checked? } or { divider: true }.
 import * as actions from "./actions.js";
+import { lang, t } from "./i18n.js";
 import * as store from "./state.js";
 
 const { state } = store;
@@ -12,143 +13,165 @@ const styleOn =
     store.activeCellData()?.style?.[name] === value;
 
 const zoomItems = store.ZOOM_LEVELS.map((zoom) => ({
-  label: `Zoom ${zoom}%`,
+  label: t("menu.zoom", { zoom }),
   run: () => store.setView({ zoom }),
   checked: () => state.view.zoom === zoom,
 }));
 
 export const menus = [
   {
-    label: "File",
+    label: t("menu.file"),
     items: [
-      { label: "New sheet", run: actions.newSheet },
-      { label: "Duplicate sheet", run: actions.duplicateActiveSheet },
-      { label: "Rename sheet", run: () => actions.renameSheet(), enabled: ownSheet },
-      { label: "Delete sheet", run: () => actions.deleteSheet(), enabled: ownSheet },
+      { label: t("menu.newSheet"), run: actions.newSheet },
+      { label: t("menu.duplicateSheet"), run: actions.duplicateActiveSheet },
+      { label: t("menu.renameSheet"), run: () => actions.renameSheet(), enabled: ownSheet },
+      { label: t("menu.deleteSheet"), run: () => actions.deleteSheet(), enabled: ownSheet },
       divider,
-      { label: "Download workbook (XLSX)", run: actions.downloadXlsx },
-      { label: "Download resume (PDF)", run: actions.downloadResume },
-      { label: "Export this sheet (CSV)", run: actions.exportCsv },
-      { label: "Print", shortcut: "Ctrl+P", run: () => window.print() },
+      { label: t("menu.downloadXlsx"), run: actions.downloadXlsx },
+      { label: t("menu.downloadResume"), run: actions.downloadResume },
+      { label: t("menu.exportCsv"), run: actions.exportCsv },
+      { label: t("menu.print"), shortcut: "Ctrl+P", run: () => window.print() },
       divider,
-      { label: "Clear storage", run: actions.clearStorage },
+      { label: t("menu.clearStorage"), run: actions.clearStorage },
     ],
   },
   {
-    label: "Edit",
+    label: t("menu.edit"),
     items: [
-      { label: "Undo", shortcut: "Ctrl+Z", run: store.undo, enabled: store.canUndo },
-      { label: "Redo", shortcut: "Ctrl+Y", run: store.redo, enabled: store.canRedo },
+      { label: t("menu.undo"), shortcut: "Ctrl+Z", run: store.undo, enabled: store.canUndo },
+      { label: t("menu.redo"), shortcut: "Ctrl+Y", run: store.redo, enabled: store.canRedo },
       divider,
-      { label: "Cut", shortcut: "Ctrl+X", run: actions.cut, enabled: editable },
-      { label: "Copy", shortcut: "Ctrl+C", run: actions.copy, enabled: () => !state.article },
+      { label: t("menu.cut"), shortcut: "Ctrl+X", run: actions.cut, enabled: editable },
       {
-        label: "Paste",
+        label: t("menu.copy"),
+        shortcut: "Ctrl+C",
+        run: actions.copy,
+        enabled: () => !state.article,
+      },
+      {
+        label: t("menu.paste"),
         shortcut: "Ctrl+V",
         run: actions.paste,
         enabled: editable,
       },
       divider,
       {
-        label: "Select all",
+        label: t("menu.selectAll"),
         shortcut: "Ctrl+A",
         run: actions.selectAll,
         enabled: () => !state.article,
       },
-      { label: "Clear cells", shortcut: "Del", run: actions.clearCells, enabled: editable },
+      { label: t("menu.clearCells"), shortcut: "Del", run: actions.clearCells, enabled: editable },
     ],
   },
   {
-    label: "View",
+    label: t("menu.view"),
     items: [
       {
-        label: "Formula bar",
+        label: t("menu.formulaBar"),
         run: () => store.setView({ formulaBar: !state.view.formulaBar }),
         checked: () => state.view.formulaBar,
       },
       {
-        label: "Gridlines",
+        label: t("menu.gridlines"),
         run: () => store.setView({ gridlines: !state.view.gridlines }),
         checked: () => state.view.gridlines,
       },
       divider,
       ...zoomItems,
-    ],
-  },
-  {
-    label: "Insert",
-    items: [
-      { label: "10 rows at the bottom", run: () => actions.growSheet(10, 0), enabled: editable },
-      { label: "5 columns at the right", run: () => actions.growSheet(0, 5), enabled: editable },
       divider,
-      { label: "Link", shortcut: "Ctrl+K", run: actions.editLink, enabled: editable },
+      ...["system", "light", "dark"].map((theme) => ({
+        label: t(`menu.theme${theme[0].toUpperCase()}${theme.slice(1)}`),
+        run: () => actions.setTheme(theme),
+        checked: () => (state.view.theme ?? "system") === theme,
+      })),
+      divider,
+      {
+        label: t("menu.langEn"),
+        run: () => actions.setLanguage("en"),
+        checked: () => lang === "en",
+      },
+      {
+        label: t("menu.langId"),
+        run: () => actions.setLanguage("id"),
+        checked: () => lang === "id",
+      },
     ],
   },
   {
-    label: "Format",
+    label: t("menu.insert"),
+    items: [
+      { label: t("menu.addRows"), run: () => actions.growSheet(10, 0), enabled: editable },
+      { label: t("menu.addCols"), run: () => actions.growSheet(0, 5), enabled: editable },
+      divider,
+      { label: t("menu.link"), shortcut: "Ctrl+K", run: actions.editLink, enabled: editable },
+    ],
+  },
+  {
+    label: t("menu.format"),
     items: [
       {
-        label: "Bold",
+        label: t("menu.bold"),
         shortcut: "Ctrl+B",
         run: () => actions.toggleFormat("bold"),
         enabled: editable,
         checked: styleOn("bold"),
       },
       {
-        label: "Italic",
+        label: t("menu.italic"),
         shortcut: "Ctrl+I",
         run: () => actions.toggleFormat("italic"),
         enabled: editable,
         checked: styleOn("italic"),
       },
       {
-        label: "Underline",
+        label: t("menu.underline"),
         shortcut: "Ctrl+U",
         run: () => actions.toggleFormat("underline"),
         enabled: editable,
         checked: styleOn("underline"),
       },
       {
-        label: "Strikethrough",
+        label: t("menu.strike"),
         run: () => actions.toggleFormat("strike"),
         enabled: editable,
         checked: styleOn("strike"),
       },
       divider,
       {
-        label: "Align left",
+        label: t("menu.alignLeft"),
         run: () => actions.setFormat("align", "left"),
         enabled: editable,
         checked: styleOn("align", "left"),
       },
       {
-        label: "Align center",
+        label: t("menu.alignCenter"),
         run: () => actions.setFormat("align", "center"),
         enabled: editable,
         checked: styleOn("align", "center"),
       },
       {
-        label: "Align right",
+        label: t("menu.alignRight"),
         run: () => actions.setFormat("align", "right"),
         enabled: editable,
         checked: styleOn("align", "right"),
       },
       {
-        label: "Wrap text",
+        label: t("menu.wrap"),
         run: () => actions.toggleFormat("wrap"),
         enabled: editable,
         checked: styleOn("wrap"),
       },
       divider,
-      { label: "Clear formatting", run: actions.clearFormatting, enabled: editable },
+      { label: t("menu.clearFormatting"), run: actions.clearFormatting, enabled: editable },
     ],
   },
   {
-    label: "Help",
+    label: t("menu.help"),
     items: [
-      { label: "Keyboard shortcuts", run: actions.showShortcuts },
-      { label: "Formulas", run: actions.showFormulaHelp },
-      { label: "About this site", run: actions.showAbout },
+      { label: t("menu.shortcuts"), run: actions.showShortcuts },
+      { label: t("menu.formulas"), run: actions.showFormulaHelp },
+      { label: t("menu.about"), run: actions.showAbout },
     ],
   },
 ];

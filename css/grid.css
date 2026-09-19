@@ -86,7 +86,7 @@
 
 /* An inset shadow tints the range on top of a cell's own fill color. */
 .grid td.in-range {
-  box-shadow: inset 0 0 0 999px rgb(0 111 230 / 12%);
+  box-shadow: inset 0 0 0 999px var(--range-tint);
 }
 
 .grid td.active {

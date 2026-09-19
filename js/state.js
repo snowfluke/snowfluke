@@ -1,10 +1,12 @@
 import { createEvaluator } from "./formula.js";
+import { lang, t } from "./i18n.js";
 import { MAX_COL_WIDTH, MIN_COL_WIDTH, canGrow, createSheet, parseTsv, toTsv } from "./sheet.js";
 import * as storage from "./storage.js";
 import { cellKey, clamp, parseKey } from "./utils.js";
 
 const HISTORY_LIMIT = 100;
-const DEFAULT_VIEW = { zoom: 100, gridlines: true, formulaBar: true };
+const THEMES = ["system", "light", "dark"];
+const DEFAULT_VIEW = { zoom: 100, gridlines: true, formulaBar: true, theme: "system", lang };
 export const ZOOM_LEVELS = [50, 75, 90, 100, 125, 150, 200];
 
 export const state = {
@@ -40,6 +42,9 @@ export function init(portfolioSheets) {
     zoom: ZOOM_LEVELS.includes(saved?.view?.zoom) ? saved.view.zoom : DEFAULT_VIEW.zoom,
     gridlines: saved?.view?.gridlines !== false,
     formulaBar: saved?.view?.formulaBar !== false,
+    theme: THEMES.includes(saved?.view?.theme) ? saved.view.theme : DEFAULT_VIEW.theme,
+    // js/i18n.js already chose the language, from the URL, this saved view, or the browser.
+    lang,
   };
 }
 
@@ -358,8 +363,8 @@ function uniqueName(base) {
 function nextSheetName() {
   const names = new Set(state.sheets.map((sheet) => sheet.name));
   let n = 1;
-  while (names.has(`Sheet${n}`)) n++;
-  return `Sheet${n}`;
+  while (names.has(t("sheet.default", { n }))) n++;
+  return t("sheet.default", { n });
 }
 
 function insertSheet(sheet) {
@@ -380,7 +385,7 @@ export function duplicateSheet(id) {
   return insertSheet({
     ...copy,
     id: newId(),
-    name: uniqueName(`Copy of ${source.name}`),
+    name: uniqueName(t("sheet.copyOf", { name: source.name })),
     locked: false,
   });
 }
