@@ -1,0 +1,190 @@
+/* Menu bar: brand, dropdown menus, status text. */
+.menubar {
+  position: relative;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--bar-height);
+  padding: 0 var(--space-3);
+  border-bottom: var(--rule);
+}
+
+.brand {
+  flex: none;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.menus {
+  display: flex;
+  flex: none;
+}
+
+.menu {
+  position: relative;
+}
+
+.menu-title {
+  padding: var(--space-1) var(--space-2);
+  border: 0;
+  background: none;
+}
+
+.menu-title:hover,
+.menu-title[aria-expanded="true"] {
+  background: var(--paper-raised);
+  color: var(--ink-strong);
+}
+
+.menu-list {
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  left: 0;
+  min-width: 15rem;
+  padding: var(--space-1) 0;
+  border: var(--rule-bright);
+  background: var(--paper);
+  box-shadow: 4px 4px 0 rgb(17 18 15 / 8%);
+}
+
+.menu-item {
+  display: grid;
+  grid-template-columns: 1rem 1fr auto;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-1) var(--space-3);
+  border: 0;
+  background: none;
+  text-align: left;
+  white-space: nowrap;
+  outline-offset: -1px;
+}
+
+.menu-item:hover:not(:disabled),
+.menu-item:focus-visible {
+  background: var(--paper-raised);
+  color: var(--ink-strong);
+}
+
+.menu-item:disabled {
+  color: var(--line-bright);
+}
+
+.menu-check {
+  color: var(--accent);
+}
+
+.menu-shortcut {
+  color: var(--muted);
+  font-size: var(--text-xs);
+  align-self: center;
+}
+
+.menu-item:disabled .menu-shortcut {
+  color: inherit;
+}
+
+.menu-divider {
+  margin: var(--space-1) 0;
+  border: 0;
+  border-top: var(--rule);
+}
+
+.status {
+  min-width: 0;
+  margin: 0 0 0 auto;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: var(--text-xs);
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status.flash {
+  color: var(--accent);
+}
+
+.downloads {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--muted);
+  font-size: var(--text-xs);
+}
+
+.downloads button,
+.downloads a {
+  padding: var(--space-1);
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.downloads button:hover,
+.downloads a:hover {
+  color: var(--ink-strong);
+}
+
+@media (max-width: 48rem) {
+  /* Row one: brand and downloads. Row two: menus. The status shows only to flash a message. */
+  .downloads {
+    margin-left: auto;
+  }
+
+  .downloads-label,
+  .status:not(.flash) {
+    display: none;
+  }
+
+  .status.flash {
+    order: 3;
+    flex-basis: 100%;
+    padding-bottom: var(--space-1);
+    text-align: left;
+  }
+
+  .menubar {
+    flex-wrap: wrap;
+    gap: 0 var(--space-3);
+    padding-top: var(--space-1);
+  }
+
+  .menus {
+    order: 2;
+    flex-basis: 100%;
+    margin-left: calc(var(--space-2) * -1);
+  }
+
+  /* Lists anchor to the menu bar, not to their title, so a right-hand menu stays on screen. */
+  .menu {
+    position: static;
+  }
+
+  .menu-list {
+    top: 100%;
+    right: var(--space-2);
+    left: var(--space-2);
+    max-height: 70dvh;
+    overflow-y: auto;
+  }
+
+  .menu-title {
+    padding: var(--space-2);
+  }
+
+  .menu-item {
+    padding-block: var(--space-2);
+  }
+
+  /* A flashed message may need two lines on a phone. */
+  .status.flash {
+    white-space: normal;
+  }
+}

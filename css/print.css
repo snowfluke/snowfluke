@@ -1,0 +1,50 @@
+/* Print: drop the app chrome and let the sheet or the article flow across pages. */
+html,
+body,
+.app {
+  display: block;
+  height: auto;
+  overflow: visible;
+}
+
+.toolbar,
+.formulabar,
+.tabs,
+.menus,
+.status,
+.article-back,
+.resizer,
+dialog {
+  display: none !important;
+}
+
+.menubar,
+.workbench {
+  border: 0;
+}
+
+.workbench::before,
+.workbench::after {
+  content: none;
+}
+
+.grid-scroll,
+.article {
+  height: auto;
+  overflow: visible;
+}
+
+.grid thead th,
+.grid .row-head {
+  position: static;
+}
+
+.grid td.active {
+  outline: 0;
+}
+
+.grid .active-head {
+  color: var(--muted);
+  background: var(--paper-raised);
+  font-weight: 400;
+}

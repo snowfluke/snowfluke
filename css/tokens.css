@@ -1,0 +1,33 @@
+/* Design tokens. Palette and type follow gpu-lexer.vercel.app: warm paper, dashed rules, one accent. */
+:root {
+  color-scheme: light;
+
+  --paper: #faf9f5;
+  --paper-raised: #f3f2ec;
+  --ink: #32332f;
+  --ink-strong: #11120f;
+  --muted: #72736b;
+  --line: #cbc9be;
+  --line-bright: #a9a79c;
+  --accent: #006fe6;
+  --accent-soft: #e3eefb;
+  --danger: #b3261e;
+
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-md: 0.9375rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+
+  --rule: 1px dashed var(--line);
+  --rule-bright: 1px dashed var(--line-bright);
+  --cell-height: 28px;
+  --bar-height: 2.5rem;
+}

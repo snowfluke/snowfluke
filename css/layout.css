@@ -1,0 +1,504 @@
+/* Page shell: base rules, app frame, toolbar, formula bar, tabs, dialog. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  /* The grid and the article scroll inside the workbench. The page itself never scrolls,
+     so scrollIntoView on a cell cannot push the menu bar off screen. */
+  overflow: hidden;
+}
+
+body {
+  min-width: 20rem;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-ligatures: none;
+  line-height: 1.5;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled,
+input:disabled {
+  cursor: not-allowed;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.25em;
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 1px;
+}
+
+::selection {
+  color: var(--paper);
+  background: var(--accent);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.app {
+  display: grid;
+  /* minmax(0, 1fr) stops the wide toolbar and tab strip from stretching the page. */
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+  height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+}
+
+/* ---- toolbar ---- */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--bar-height);
+  padding: var(--space-1) var(--space-3);
+  border-bottom: var(--rule);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tool {
+  flex: none;
+  min-width: 1.9rem;
+  height: 1.9rem;
+  padding: 0 var(--space-2);
+  border: 1px solid transparent;
+  background: none;
+  color: var(--ink);
+}
+
+.tool:hover:not(:disabled) {
+  background: var(--paper-raised);
+  border-color: var(--line);
+}
+
+.tool:disabled {
+  color: var(--line-bright);
+}
+
+.tool[aria-pressed="true"] {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.tool-bold {
+  font-weight: 600;
+}
+
+.tool-italic {
+  font-style: italic;
+}
+
+.tool-underline {
+  text-decoration: underline;
+}
+
+.tool-strike {
+  text-decoration: line-through;
+}
+
+.tool-divider {
+  flex: none;
+  width: 0;
+  height: 1.25rem;
+  margin: 0 var(--space-1);
+  border-left: var(--rule-bright);
+}
+
+.swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+.swatch input {
+  width: 1.1rem;
+  height: 1.1rem;
+  padding: 0;
+  border: 1px solid var(--line-bright);
+  background: none;
+  cursor: pointer;
+}
+
+.swatch input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+/* Two rules on purpose. One unknown pseudo-element would void a grouped selector. */
+.swatch input::-webkit-color-swatch {
+  border: 0;
+}
+
+.swatch input::-moz-color-swatch {
+  border: 0;
+}
+
+.swatch:has(input:disabled) {
+  color: var(--line-bright);
+  cursor: not-allowed;
+}
+
+/* ---- formula bar ---- */
+
+.formulabar {
+  display: flex;
+  align-items: center;
+  min-height: var(--bar-height);
+  border-bottom: var(--rule);
+}
+
+.name-box,
+.formula-input {
+  height: var(--bar-height);
+  border: 0;
+  background: none;
+  outline-offset: -1px;
+}
+
+.name-box {
+  flex: none;
+  width: 4.5rem;
+  padding: 0 var(--space-3);
+  border-right: var(--rule);
+  color: var(--muted);
+  text-align: center;
+}
+
+.fx {
+  flex: none;
+  padding: 0 var(--space-3);
+  color: var(--line-bright);
+  font-style: italic;
+  font-weight: 600;
+  user-select: none;
+}
+
+.formula-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 var(--space-2);
+  color: var(--ink-strong);
+}
+
+.formula-input:read-only {
+  color: var(--muted);
+}
+
+.formula-input::placeholder {
+  color: var(--line-bright);
+}
+
+/* ---- workbench: the frame around the grid, with "+" corner marks ---- */
+
+.workbench {
+  position: relative;
+  min-height: 0;
+  margin: var(--space-3);
+  border: var(--rule-bright);
+}
+
+.workbench::before,
+.workbench::after {
+  content: "+";
+  position: absolute;
+  z-index: 40;
+  color: var(--line-bright);
+  background: var(--paper);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.workbench::before {
+  top: -0.55em;
+  left: -0.35em;
+}
+
+.workbench::after {
+  right: -0.35em;
+  bottom: -0.55em;
+}
+
+.grid-scroll,
+.article {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.grid-scroll:focus-visible {
+  outline: 0;
+}
+
+/* ---- sheet tabs ---- */
+
+.tabs {
+  display: flex;
+  align-items: stretch;
+  min-height: var(--bar-height);
+  border-top: var(--rule);
+  background: var(--paper-raised);
+}
+
+.tab-add {
+  flex: none;
+  width: var(--bar-height);
+  border: 0;
+  border-right: var(--rule);
+  background: none;
+  color: var(--muted);
+  font-size: var(--text-md);
+}
+
+.tab-add:hover {
+  color: var(--accent);
+}
+
+.tab-list {
+  display: flex;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tab-group {
+  display: flex;
+  flex: none;
+  border-right: var(--rule);
+}
+
+.tab {
+  flex: none;
+  padding: 0 var(--space-4);
+  border: 0;
+  border-top: 2px solid transparent;
+  border-right: var(--rule);
+  background: none;
+  color: var(--muted);
+  white-space: nowrap;
+  outline-offset: -2px;
+}
+
+.tab-group .tab {
+  border-right: 0;
+  padding-right: var(--space-2);
+}
+
+.tab:hover {
+  color: var(--ink-strong);
+}
+
+.tab[aria-selected="true"] {
+  border-top-color: var(--accent);
+  background: var(--paper);
+  color: var(--ink-strong);
+  font-weight: 600;
+}
+
+.tab-group:has([aria-selected="true"]) {
+  background: var(--paper);
+}
+
+.tab-remove {
+  padding: 0 var(--space-3) 0 var(--space-1);
+  border: 0;
+  border-top: 2px solid transparent;
+  background: none;
+  color: var(--line-bright);
+  outline-offset: -2px;
+}
+
+.tab-group:has([aria-selected="true"]) .tab-remove {
+  border-top-color: var(--accent);
+}
+
+.tab-remove:hover {
+  color: var(--danger);
+}
+
+/* ---- dialog ---- */
+
+dialog {
+  width: min(100% - 2rem, 30rem);
+  padding: 0;
+  border: var(--rule-bright);
+  color: var(--ink);
+  background: var(--paper);
+}
+
+dialog::backdrop {
+  background: rgb(17 18 15 / 35%);
+}
+
+.dialog-form {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-6);
+}
+
+.dialog-form h2 {
+  margin: 0;
+  color: var(--accent);
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.dialog-form p,
+.dialog-form pre {
+  margin: 0;
+}
+
+.dialog-form pre {
+  padding: var(--space-3);
+  border: var(--rule);
+  background: var(--paper-raised);
+  overflow-x: auto;
+}
+
+.dialog-form label {
+  display: grid;
+  gap: var(--space-2);
+  color: var(--muted);
+}
+
+.dialog-form input {
+  padding: var(--space-2);
+  border: 1px solid var(--line-bright);
+  background: var(--paper);
+  color: var(--ink-strong);
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.dialog-actions button {
+  padding: var(--space-1) var(--space-4);
+  border: 1px solid var(--line-bright);
+  background: var(--paper);
+}
+
+.dialog-actions button:hover {
+  background: var(--paper-raised);
+}
+
+.dialog-actions .primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.dialog-actions .primary:hover {
+  background: var(--ink-strong);
+  border-color: var(--ink-strong);
+}
+
+.dialog-actions .danger {
+  border-color: var(--danger);
+  background: var(--danger);
+}
+
+.shortcuts {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.shortcuts th,
+.shortcuts td {
+  padding: var(--space-1) 0;
+  border-bottom: var(--rule);
+  text-align: left;
+  font-weight: 400;
+  vertical-align: top;
+}
+
+.shortcuts th {
+  width: 45%;
+  padding-right: var(--space-3);
+  color: var(--ink-strong);
+}
+
+.noscript {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  padding: var(--space-8);
+  background: var(--paper);
+}
+
+@media (max-width: 40rem) {
+  .workbench {
+    margin: var(--space-2);
+  }
+
+  /* Every tool is disabled on a locked sheet. On a phone that row is wasted space. */
+  .app[data-editable="false"] .toolbar {
+    display: none;
+  }
+
+  .name-box {
+    width: 3.5rem;
+    padding: 0 var(--space-1);
+  }
+
+  .tab {
+    padding: 0 var(--space-3);
+  }
+
+  .article-page {
+    padding-top: var(--space-4);
+  }
+}
+
+@media (pointer: coarse) {
+  /* iOS zooms the page when a focused input has text under 16px. */
+  input,
+  select {
+    font-size: 16px;
+  }
+
+  .tool {
+    min-width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .tab-remove {
+    padding: 0 var(--space-4) 0 var(--space-2);
+  }
+}
