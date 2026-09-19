@@ -85,15 +85,20 @@ const about = sheetFromRows({
     [],
     [header("Awards")],
     [
-      "1st place",
-      wrapped("Techcomfest 2022 Software Development Competition. Politeknik Negeri Semarang."),
-    ],
-    [
-      "2nd place",
+      "2nd place, 2023",
       wrapped("PIKMI 2023 BSI Software Development. Universitas Bina Sarana Informatika."),
     ],
-    ["3rd place", wrapped("Cyber 2022 Website Design. Universitas Gorontalo.")],
-    ["Top 10 finalist", wrapped("Google Hackfest 2023. Google Developer Student Club Indonesia.")],
+    ["Top 10, 2023", wrapped("Google Hackfest 2023. Google Developer Student Club Indonesia.")],
+    [
+      "1st place, 2022",
+      wrapped("Techcomfest 2022 Software Development Competition. Politeknik Negeri Semarang."),
+    ],
+    ["3rd place, 2022", wrapped("Cyber 2022 Website Design. Universitas Gorontalo.")],
+    ["Top 10, 2021", wrapped("CODE AMCC 2021. AMIKOM Yogyakarta.")],
+    ["Top 10, 2019", wrapped("Techcomfest Network Competition 2019. Politeknik Negeri Semarang.")],
+    ["3rd place, 2018", wrapped("LKS Web Design Competition. MKKS SMK Kabupaten Cilacap.")],
+    ["Top 10, 2018", wrapped("GEMASTE Web Design Competition 2018. Universitas Negeri Semarang.")],
+    ["2nd place, 2017", wrapped("LKS Web Design Competition. MKKS SMK Kabupaten Cilacap.")],
     [],
     [
       null,
