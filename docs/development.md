@@ -107,3 +107,5 @@ npm run fmt     # format
 ## Deploy
 
 Any static host works. Run `npm run blog` before you deploy, or set it as the build command. There is no output folder. The repo root is the site.
+
+`_headers` tells Cloudflare Pages to send `Cache-Control: no-cache`. The browser then checks every file on each visit, so a deploy reaches returning visitors at once.

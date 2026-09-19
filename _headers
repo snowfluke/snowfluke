@@ -1,0 +1,8 @@
+# Cloudflare Pages response headers.
+# File names carry no version hash, so a cached copy would go stale after a deploy and a visitor
+# could run a new page with old scripts. "no-cache" makes the browser revalidate every file.
+# An unchanged file costs one small 304 reply, because Pages sends an ETag.
+/*
+  Cache-Control: no-cache
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
