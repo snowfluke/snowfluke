@@ -127,6 +127,16 @@
   white-space: nowrap;
 }
 
+.lang-active {
+  color: var(--ink-strong);
+  font-weight: 600;
+}
+
+.lang-other {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
 .header-divider {
   align-self: stretch;
   margin: var(--space-2) 0;
@@ -168,7 +178,11 @@
 
   .downloads button,
   .downloads a {
-    padding: var(--space-2) 5px;
+    padding: var(--space-2) 4px;
+  }
+
+  .menubar {
+    padding-inline: var(--space-2);
   }
 
   .downloads button::before,

@@ -4,7 +4,7 @@ import { blogSheet, loadPosts } from "./blog.js";
 import { RESUME_PDF, portfolioSheets } from "./data/portfolio.js";
 import { mountFormulaBar } from "./formulabar.js";
 import { mountGrid } from "./grid.js";
-import { otherLang, t, translateDocument } from "./i18n.js";
+import { lang, otherLang, t, translateDocument } from "./i18n.js";
 import { mountMenubar } from "./menubar.js";
 import { menus } from "./menus.js";
 import { startRouter } from "./router.js";
@@ -12,6 +12,7 @@ import { init, isEditable, replaceSheet, state, subscribe } from "./state.js";
 import { mountStatus, syncStatus } from "./status.js";
 import { mountTabs } from "./tabs.js";
 import { applyTheme, effectiveTheme } from "./theme.js";
+import { el } from "./utils.js";
 import { mountToolbar } from "./toolbar.js";
 
 const byId = (id) => document.getElementById(id);
@@ -37,10 +38,15 @@ const markEditable = () => (app.dataset.editable = String(isEditable()));
 subscribe(markEditable);
 byId("download-xlsx").addEventListener("click", downloadXlsx);
 
-// The language button names the language it switches to. The theme button names the theme
-// it switches to.
+// The theme button names the theme it switches to.
 const langButton = byId("switch-lang");
-langButton.textContent = otherLang;
+// Both languages show, and the active one is highlighted. A lone "id" did not read as a toggle.
+langButton.replaceChildren(
+  ...["en", "id"].flatMap((code, n) => [
+    n ? "/" : "",
+    el("span", { class: code === lang ? "lang-active" : "lang-other" }, code.toUpperCase()),
+  ]),
+);
 langButton.addEventListener("click", () => setLanguage(otherLang));
 
 const themeButton = byId("switch-theme");
