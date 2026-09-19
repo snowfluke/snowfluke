@@ -1,0 +1,165 @@
+/* Blog reading pane. Replaces the grid inside the workbench. */
+.article-page {
+  width: min(100% - 2rem, 46rem);
+  margin-inline: auto;
+  padding: var(--space-8) 0 var(--space-12);
+  font-size: var(--text-md);
+  line-height: 1.65;
+}
+
+.article-back {
+  display: inline-block;
+  color: var(--muted);
+  font-size: var(--text-sm);
+  text-decoration: none;
+}
+
+.article-page > header {
+  margin: var(--space-8) 0;
+  padding-bottom: var(--space-4);
+  border-bottom: var(--rule);
+}
+
+.article-page h1 {
+  margin: 0 0 var(--space-2);
+  color: var(--accent);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.article-meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.article-body {
+  margin-bottom: var(--space-12);
+}
+
+.article-body h1,
+.article-body h2,
+.article-body h3,
+.article-body h4,
+.article-body h5,
+.article-body h6 {
+  margin: var(--space-8) 0 var(--space-3);
+  color: var(--ink-strong);
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.article-body h2::before {
+  content: "## ";
+  color: var(--line-bright);
+}
+
+.article-body h3::before {
+  content: "### ";
+  color: var(--line-bright);
+}
+
+.article-body p,
+.article-body ul,
+.article-body ol,
+.article-body pre,
+.article-body blockquote,
+.article-body .table-scroll {
+  margin: 0 0 var(--space-4);
+}
+
+.article-body ul,
+.article-body ol {
+  padding-left: var(--space-6);
+}
+
+.article-body li > ul,
+.article-body li > ol {
+  margin-bottom: 0;
+}
+
+.article-body li::marker {
+  color: var(--muted);
+}
+
+.article-body a {
+  color: var(--accent);
+}
+
+.article-body a:hover {
+  color: var(--ink-strong);
+}
+
+.article-body strong {
+  color: var(--ink-strong);
+  font-weight: 600;
+}
+
+.article-body code {
+  padding: 0.1em 0.3em;
+  background: var(--paper-raised);
+  color: var(--ink-strong);
+  font-family: inherit;
+}
+
+.article-body pre {
+  padding: var(--space-4);
+  border: var(--rule);
+  background: var(--paper-raised);
+  overflow-x: auto;
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  scrollbar-width: thin;
+}
+
+.article-body pre code {
+  padding: 0;
+  background: none;
+}
+
+.article-body blockquote {
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--line-bright);
+  color: var(--muted);
+}
+
+.article-body blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.article-body hr {
+  margin: var(--space-8) 0;
+  border: 0;
+  border-top: var(--rule);
+}
+
+.article-body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: var(--rule);
+}
+
+.article-body .table-scroll {
+  overflow-x: auto;
+}
+
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.article-body th,
+.article-body td {
+  padding: var(--space-1) var(--space-3) var(--space-1) 0;
+  border-bottom: var(--rule);
+  text-align: left;
+}
+
+.article-body th {
+  border-top: var(--rule);
+  color: var(--muted);
+  font-weight: 400;
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "slug": "hello-grid",
+    "title": "My portfolio is a spreadsheet",
+    "date": "2026-09-19",
+    "category": "Meta",
+    "excerpt": "No framework, no bundler. A grid, a formula engine, and a markdown parser.",
+    "words": 216
+  }
+]
