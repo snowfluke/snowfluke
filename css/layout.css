@@ -69,9 +69,32 @@ a:focus-visible {
   /* minmax(0, 1fr) stops the wide toolbar and tab strip from stretching the page. */
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+  /* Named rows. The toolbar and the formula bar can be hidden. With automatic placement a
+     hidden one shifts the rest up, and the 1fr row lands on the tab strip, not the grid. */
+  grid-template-areas: "menubar" "toolbar" "formulabar" "workbench" "tabs";
   height: 100dvh;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
     env(safe-area-inset-left);
+}
+
+.menubar {
+  grid-area: menubar;
+}
+
+.toolbar {
+  grid-area: toolbar;
+}
+
+.formulabar {
+  grid-area: formulabar;
+}
+
+.workbench {
+  grid-area: workbench;
+}
+
+.tabs {
+  grid-area: tabs;
 }
 
 /* ---- toolbar ---- */
