@@ -84,6 +84,11 @@
   background-color: var(--paper-raised);
 }
 
+/* An inset shadow tints the range on top of a cell's own fill color. */
+.grid td.in-range {
+  box-shadow: inset 0 0 0 999px rgb(0 111 230 / 12%);
+}
+
 .grid td.active {
   outline: 2px solid var(--accent);
   outline-offset: -2px;

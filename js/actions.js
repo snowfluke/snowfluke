@@ -3,6 +3,7 @@ import { ask, confirmAction, inform } from "./dialog.js";
 import { go } from "./router.js";
 import { RESUME_PDF } from "./data/portfolio.js";
 import { toCsv } from "./sheet.js";
+import { writeClipboard } from "./clipboard.js";
 import * as store from "./state.js";
 import { LOCKED_MESSAGE, flashStatus } from "./status.js";
 import { el, safeUrl } from "./utils.js";
@@ -92,7 +93,7 @@ export async function clearStorage() {
 export const toggleFormat = (name) => requireEditable() && store.toggleStyle(name);
 export const setFormat = (name, value) => requireEditable() && store.setStyle(name, value);
 export const clearFormatting = () => requireEditable() && store.clearFormatting();
-export const clearCell = () => requireEditable() && store.setCellValue("");
+export const clearCells = () => requireEditable() && store.clearSelection();
 export const growSheet = (rows, cols) =>
   requireEditable() &&
   (store.growSheet(rows, cols) || flashStatus("This sheet is at its size limit."));
@@ -111,28 +112,55 @@ export async function editLink() {
   store.setStyle("link", url.trim() ? safeUrl(url) : undefined);
 }
 
-function writeClipboard(text) {
-  // Browsers can refuse clipboard access. The internal clipboard still holds the cell.
-  navigator.clipboard?.writeText(text).catch(() => {});
+const cellCount = (count) => `${count} cell${count === 1 ? "" : "s"}`;
+
+export async function copy() {
+  if (state.article) return;
+  const copied = store.copySelection();
+  const done = await writeClipboard(copied);
+  flashStatus(
+    done
+      ? `Copied ${cellCount(copied.count)}. Paste it anywhere.`
+      : "The browser blocked the clipboard.",
+  );
 }
 
-export const copy = () => writeClipboard(store.copyCell());
-export const paste = () => requireEditable() && store.pasteCell();
-export function cut() {
-  if (requireEditable()) writeClipboard(store.cutCell());
+export async function cut() {
+  if (!requireEditable()) return;
+  const copied = store.cutSelection();
+  await writeClipboard(copied);
+  flashStatus(`Cut ${cellCount(copied.count)}.`);
 }
+
+// The menu item reads the system clipboard when the browser allows it. Ctrl+V does not come
+// here. It arrives as a native paste event in js/grid.js and needs no permission.
+export async function paste() {
+  if (!requireEditable()) return;
+  let text;
+  try {
+    text = await navigator.clipboard.readText();
+  } catch {
+    text = undefined;
+  }
+  store.pasteText(text);
+}
+
+export const selectAll = () => state.article || store.selectAll();
 
 // ---- help ----
 
 const SHORTCUTS = [
   ["Arrow keys, Tab", "Move the selection"],
+  ["Shift+arrows, Shift+click, drag", "Select a range"],
+  ["Click a row or column header", "Select the row or column"],
+  ["Ctrl+A", "Select all used cells"],
   ["Enter, F2, or type", "Edit the cell"],
   ["Esc", "Cancel the edit"],
-  ["Delete", "Clear the cell"],
+  ["Delete", "Clear the selected cells"],
   ["Ctrl+Z, Ctrl+Y", "Undo, redo"],
   ["Ctrl+B, Ctrl+I, Ctrl+U", "Bold, italic, underline"],
   ["Ctrl+K", "Add a link"],
-  ["Ctrl+C, Ctrl+X, Ctrl+V", "Copy, cut, paste"],
+  ["Ctrl+C, Ctrl+X, Ctrl+V", "Copy, cut, paste. Works with Excel, Sheets and mail."],
 ];
 
 export function showShortcuts() {

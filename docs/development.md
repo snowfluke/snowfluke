@@ -65,20 +65,21 @@ Portfolio sheets never go to localStorage. A returning visitor gets your new con
 
 ## Layout
 
-| Path                                      | Job                                                    |
-| ----------------------------------------- | ------------------------------------------------------ |
-| `index.html`                              | Page shell                                             |
-| `css/tokens.css`                          | Colors, type, spacing                                  |
-| `css/*.css`                               | One file for each UI area                              |
-| `js/state.js`                             | Store: sheets, selection, undo, save                   |
-| `js/formula.js`                           | Formula parser and evaluator                           |
-| `js/markdown.js`                          | Markdown parser                                        |
-| `js/xlsx.js`                              | XLSX and zip writer                                    |
-| `resume.html`, `scripts/build-resume.mjs` | Resume page and its PDF build                          |
-| `js/actions.js`, `js/menus.js`            | Commands and the menu definitions                      |
-| `js/grid.js` and the other UI files       | One file for each UI area                              |
-| `scripts/build-blog.mjs`                  | Writes `blog/index.json`                               |
-| `tests/`                                  | `node:test` checks for the parsers and the XLSX writer |
+| Path                                      | Job                                                            |
+| ----------------------------------------- | -------------------------------------------------------------- |
+| `index.html`                              | Page shell                                                     |
+| `css/tokens.css`                          | Colors, type, spacing                                          |
+| `css/*.css`                               | One file for each UI area                                      |
+| `js/state.js`                             | Store: sheets, selection, undo, save                           |
+| `js/formula.js`                           | Formula parser and evaluator                                   |
+| `js/markdown.js`                          | Markdown parser                                                |
+| `js/xlsx.js`                              | XLSX and zip writer                                            |
+| `js/clipboard.js`                         | System clipboard writes: tab-separated text plus an HTML table |
+| `resume.html`, `scripts/build-resume.mjs` | Resume page and its PDF build                                  |
+| `js/actions.js`, `js/menus.js`            | Commands and the menu definitions                              |
+| `js/grid.js` and the other UI files       | One file for each UI area                                      |
+| `scripts/build-blog.mjs`                  | Writes `blog/index.json`                                       |
+| `tests/`                                  | `node:test` checks for the parsers and the XLSX writer         |
 
 ## Checks
 

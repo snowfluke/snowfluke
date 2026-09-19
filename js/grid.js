@@ -1,4 +1,5 @@
 import * as actions from "./actions.js";
+import { fillClipboardEvent } from "./clipboard.js";
 import { isDialogOpen } from "./dialog.js";
 import { DEFAULT_COL_WIDTH, MIN_COL_WIDTH } from "./sheet.js";
 import * as store from "./state.js";
@@ -111,7 +112,7 @@ export function mountGrid(root) {
         el(
           "tr",
           {},
-          el("th", { class: "row-head", scope: "row" }, String(row)),
+          el("th", { class: "row-head", scope: "row", dataset: { row } }, String(row)),
           ...cols.map((col) => renderCell(sheet, display, row, col)),
         ),
       );
@@ -141,17 +142,28 @@ export function mountGrid(root) {
     table.classList.toggle("no-gridlines", !state.view.gridlines);
   }
 
-  function markSelection() {
+  // scroll is false when a header or a drag made the selection. The view must not jump then.
+  function markSelection(scroll = true) {
     if (!table) return;
-    for (const node of table.querySelectorAll(".active, .active-head"))
-      node.classList.remove("active", "active-head");
-    const { row, col } = state.activeCell;
-    const td = cellNode(row, col);
+    for (const node of table.querySelectorAll(".active, .in-range, .active-head")) {
+      node.classList.remove("active", "in-range", "active-head");
+    }
+    const { top, bottom, left, right } = store.selectionRange();
+    const single = top === bottom && left === right;
+    const bodyRows = table.tBodies[0].rows;
+    for (let row = top; row <= bottom; row++) {
+      bodyRows[row - 1].cells[0].classList.add("active-head");
+      if (single) continue;
+      for (let col = left; col <= right; col++)
+        bodyRows[row - 1].cells[col].classList.add("in-range");
+    }
+    for (let col = left; col <= right; col++)
+      table.tHead.rows[0].cells[col].classList.add("active-head");
+
+    const td = cellNode(state.activeCell.row, state.activeCell.col);
     if (!td) return;
     td.classList.add("active");
-    table.tHead.rows[0].cells[col].classList.add("active-head");
-    table.tBodies[0].rows[row - 1].cells[0].classList.add("active-head");
-    td.scrollIntoView({ block: "nearest", inline: "nearest" });
+    if (scroll) td.scrollIntoView({ block: "nearest", inline: "nearest" });
   }
 
   // ---- editing ----
@@ -197,14 +209,75 @@ export function mountGrid(root) {
 
   // ---- pointer ----
 
+  const cellOf = (event) => {
+    const td = event.target.closest?.("td");
+    return td && root.contains(td)
+      ? { row: Number(td.dataset.row), col: Number(td.dataset.col) }
+      : null;
+  };
+
+  // A mouse selects on press and extends while it drags, like a desktop spreadsheet.
+  // Touch keeps the press free for scrolling and selects on tap, in the click handler.
+  let dragging = false;
+  let pressed = false;
+  let quiet = false;
+
+  root.addEventListener("pointerdown", (event) => {
+    if (event.pointerType !== "mouse" || event.button !== 0 || event.target === editor) return;
+    const sheet = store.activeSheet();
+    const head = event.target.closest("th");
+    if (head && !event.target.closest(".resizer")) {
+      quiet = true;
+      if (head.dataset.col) {
+        const col = Number(head.dataset.col);
+        store.selectRange({ row: 1, col }, { row: sheet.rowCount, col });
+      } else if (head.dataset.row) {
+        const row = Number(head.dataset.row);
+        store.selectRange({ row, col: 1 }, { row, col: sheet.colCount });
+      } else {
+        store.selectRange({ row: 1, col: 1 }, { row: sheet.rowCount, col: sheet.colCount });
+      }
+      quiet = false;
+      root.focus();
+      event.preventDefault();
+      return;
+    }
+    const cell = cellOf(event);
+    if (!cell) return;
+    pressed = true;
+    dragging = true;
+    store.selectCell(cell.row, cell.col, event.shiftKey);
+  });
+
+  root.addEventListener("pointerover", (event) => {
+    if (!dragging) return;
+    const cell = cellOf(event);
+    if (!cell || (cell.row === state.activeCell.row && cell.col === state.activeCell.col)) return;
+    quiet = true;
+    store.selectCell(cell.row, cell.col, true);
+    quiet = false;
+  });
+
+  window.addEventListener("pointerup", () => {
+    dragging = false;
+    // The click, if any, fires right after this event. A release outside a cell has no click,
+    // so clear the flag afterwards or the next tap would be ignored.
+    setTimeout(() => (pressed = false), 0);
+  });
+
   root.addEventListener("click", (event) => {
-    const td = event.target.closest("td");
-    if (!td || event.target === editor) return;
-    const row = Number(td.dataset.row);
-    const col = Number(td.dataset.col);
+    const cell = cellOf(event);
+    if (!cell || event.target === editor) return;
+    // The mouse press already made this selection. A second select would collapse a drag.
+    if (pressed) {
+      pressed = false;
+      root.focus();
+      return;
+    }
     // Touch has no reliable double-tap. A second tap on the active cell starts the edit.
+    const { row, col } = cell;
     const tapAgain = touch.matches && row === state.activeCell.row && col === state.activeCell.col;
-    store.selectCell(row, col);
+    store.selectCell(row, col, event.shiftKey);
     if (tapAgain && store.isEditable() && !event.target.closest("a")) return startEdit();
     // A clicked link would keep focus and swallow the arrow keys.
     root.focus();
@@ -258,6 +331,8 @@ export function mountGrid(root) {
       : state.activeCell.col < store.activeSheet().colCount);
 
   const MOVES = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] };
+  // Copy and cut run from the key press, not from the browser's copy event. That event
+  // does not fire when no text is selected, and grid cells are not selectable text.
   const COMMANDS = {
     z: (event) => (event.shiftKey ? store.redo() : store.undo()),
     y: () => store.redo(),
@@ -265,6 +340,9 @@ export function mountGrid(root) {
     i: () => actions.toggleFormat("italic"),
     u: () => actions.toggleFormat("underline"),
     k: () => actions.editLink(),
+    a: () => actions.selectAll(),
+    c: () => actions.copy(),
+    x: () => actions.cut(),
   };
 
   document.addEventListener("keydown", (event) => {
@@ -279,34 +357,33 @@ export function mountGrid(root) {
     }
     if (event.altKey) return;
 
-    if (MOVES[event.key]) store.moveSelection(...MOVES[event.key]);
+    if (MOVES[event.key]) store.moveSelection(...MOVES[event.key], event.shiftKey);
     else if (event.key === "Tab" && canTab(event)) store.moveSelection(0, event.shiftKey ? -1 : 1);
     else if (event.key === "Enter" || event.key === "F2") startEdit();
-    else if (event.key === "Delete" || event.key === "Backspace") actions.clearCell();
+    else if (event.key === "Escape") store.selectCell(state.activeCell.row, state.activeCell.col);
+    else if (event.key === "Delete" || event.key === "Backspace") actions.clearCells();
     else if (event.key.length === 1) startEdit(event.key);
     else return;
     event.preventDefault();
   });
 
+  // The native events still arrive from the browser's Edit menu and the context menu.
   document.addEventListener("copy", (event) => {
-    if (!gridHasKeys(event)) return;
-    event.clipboardData.setData("text/plain", store.copyCell());
-    event.preventDefault();
+    if (gridHasKeys(event)) fillClipboardEvent(event, store.copySelection());
   });
 
   document.addEventListener("cut", (event) => {
     if (!gridHasKeys(event)) return;
-    const text = store.cutCell();
-    if (text === null) return flashStatus(LOCKED_MESSAGE);
-    event.clipboardData.setData("text/plain", text);
-    event.preventDefault();
+    const copied = store.cutSelection();
+    if (copied === null) return flashStatus(LOCKED_MESSAGE);
+    fillClipboardEvent(event, copied);
   });
 
   document.addEventListener("paste", (event) => {
     if (!gridHasKeys(event)) return;
     event.preventDefault();
     if (!store.isEditable()) return flashStatus(LOCKED_MESSAGE);
-    store.pasteCell(event.clipboardData.getData("text/plain"));
+    store.pasteText(event.clipboardData.getData("text/plain"));
   });
 
   // ---- state ----
@@ -324,7 +401,7 @@ export function mountGrid(root) {
   store.subscribe((change) => {
     root.hidden = Boolean(state.article);
     if (state.article) return;
-    if (change === "selection") markSelection();
+    if (change === "selection") markSelection(!quiet);
     else if (change === "view") applyView();
     else render();
   });

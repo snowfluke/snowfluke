@@ -95,3 +95,60 @@ export function toCsv(sheet, display) {
   }
   return lines.join("\r\n");
 }
+
+// ---- clipboard formats ----
+// Spreadsheets trade ranges as tab-separated text, with an HTML table beside it for rich paste.
+
+function tsvField(text) {
+  return /["\t\n\r]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
+}
+
+// rows is a list of rows of strings.
+export function toTsv(rows) {
+  return rows.map((row) => row.map(tsvField).join("\t")).join("\n");
+}
+
+// Reads tab-separated text. A quoted field may hold tabs, newlines and doubled quotes.
+export function parseTsv(text) {
+  const rows = [[]];
+  let field = "";
+  let quoted = false;
+  const source = text.replace(/\r\n?/g, "\n").replace(/\n$/, "");
+
+  for (let i = 0; i < source.length; i++) {
+    const char = source[i];
+    if (quoted) {
+      if (char !== '"') field += char;
+      else if (source[i + 1] === '"') field += source[++i];
+      else quoted = false;
+    } else if (char === '"' && field === "") quoted = true;
+    else if (char === "\t" || char === "\n") {
+      rows.at(-1).push(field);
+      field = "";
+      if (char === "\n") rows.push([]);
+    } else field += char;
+  }
+  rows.at(-1).push(field);
+  return rows;
+}
+
+const htmlEscape = (text) =>
+  text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+// cells is a list of rows of { text, style }. Word, Docs and mail clients paste this as a table.
+export function toHtmlTable(cells) {
+  const td = ({ text, style }) => {
+    const css = [
+      (style.bold || style.header) && "font-weight:bold",
+      style.italic && "font-style:italic",
+    ].filter(Boolean);
+    const attr = css.length ? ` style="${css.join(";")}"` : "";
+    const body = htmlEscape(text).replaceAll("\n", "<br>");
+    const link = style.link && /^(https?:|mailto:)/i.test(style.link) ? style.link : null;
+    const inner = link
+      ? `<a href="${htmlEscape(link).replaceAll('"', "&quot;")}">${body}</a>`
+      : body;
+    return `<td${attr}>${inner}</td>`;
+  };
+  return `<table>${cells.map((row) => `<tr>${row.map(td).join("")}</tr>`).join("")}</table>`;
+}

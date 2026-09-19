@@ -46,10 +46,16 @@ export const menus = [
         label: "Paste",
         shortcut: "Ctrl+V",
         run: actions.paste,
-        enabled: () => editable() && store.hasClipboard(),
+        enabled: editable,
       },
       divider,
-      { label: "Clear cell", shortcut: "Del", run: actions.clearCell, enabled: editable },
+      {
+        label: "Select all",
+        shortcut: "Ctrl+A",
+        run: actions.selectAll,
+        enabled: () => !state.article,
+      },
+      { label: "Clear cells", shortcut: "Del", run: actions.clearCells, enabled: editable },
     ],
   },
   {
