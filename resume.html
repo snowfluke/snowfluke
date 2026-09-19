@@ -1,0 +1,193 @@
+<!doctype html>
+<!--
+  One-page A4 resume. Source of downloads/awal-ariansyah-resume.pdf.
+  After an edit, run: npm run resume
+  Format rules (Stanford career education): one page, newest first, every bullet starts with
+  an action verb, numbers where they are true, no pronouns, no photo, no personal data.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Awal Ariansyah - Resume - Backend Engineer, OCR and Computer Vision</title>
+    <meta
+      name="description"
+      content="Resume of Awal Ariansyah, backend engineer for OCR and computer vision systems."
+    />
+    <link rel="stylesheet" href="css/resume.css" />
+  </head>
+  <body>
+    <nav class="screen-only">
+      <a href="./">[ back to the spreadsheet ]</a>
+      <a href="downloads/awal-ariansyah-resume.pdf" download>[ download pdf ]</a>
+    </nav>
+
+    <main class="page">
+      <header>
+        <h1>Awal Ariansyah</h1>
+        <p class="headline">Backend Engineer - OCR and Computer Vision Systems</p>
+        <p class="proof">
+          Author of an OCR SDK with 75,000+ npm downloads a month. OCR product in production at 2
+          client companies.
+        </p>
+        <p class="contact">
+          Jakarta, Indonesia (UTC+7). Open to remote roles. Notice period: 1 month.
+        </p>
+        <p class="contact">
+          <a href="mailto:awalariansyah7@gmail.com">awalariansyah7@gmail.com</a>
+          <span>|</span> <a href="https://github.com/snowfluke">github.com/snowfluke</a>
+          <span>|</span>
+          <a href="https://www.linkedin.com/in/awalariansyah/">linkedin.com/in/awalariansyah</a>
+          <span>|</span> <a href="https://www.awala.my.id/">awala.my.id</a>
+        </p>
+      </header>
+
+      <section>
+        <h2>Experience</h2>
+
+        <div class="entry">
+          <p>
+            <b>PT. Perkasa Pilar Utama</b>, B2B enterprise IT vendor <span>|</span> Jakarta Utara,
+            Indonesia
+          </p>
+          <p>
+            <i>Backend Engineer and Team Lead, custom software division</i> <span>|</span> Oct 2023
+            - Present
+          </p>
+          <ul>
+            <li>
+              Lead a team of 3 engineers in the custom software division, train new engineers, and
+              direct the AI experiment team in LLM and computer vision work.
+            </li>
+            <li>
+              Architected and developed Oksara, the company OCR product, end to end in TypeScript,
+              Bun, and ONNX Runtime. It runs in production at 2 client companies and extracts data
+              from 5 document types: national ID cards, vehicle ownership books, receipts, resumes,
+              and bank statements.
+            </li>
+            <li>
+              Open-sourced the OCR and image processing core of Oksara as ppu-paddle-ocr and
+              ppu-ocv. Each package now has 75,000+ npm downloads a month.
+            </li>
+            <li>
+              Engineered a payment reconciliation platform, now in production, in Go with 3 services
+              (API gateway, scheduler, data collector) on PostgreSQL, RabbitMQ, and Redis, monitored
+              with Prometheus and Grafana.
+            </li>
+            <li>
+              Built an R&amp;D prototype (Mar - Sep 2024): an Android app in Kotlin that sends
+              encrypted, compressed messages over LoRa long-range radio without internet.
+            </li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <p>
+            <b>PT. BPR Bank Cirebon Jabar (Perseroda)</b>, regional bank <span>|</span> Cirebon,
+            Indonesia
+          </p>
+          <p>
+            <i>Mobile Frontend Developer (3-month contract)</i> <span>|</span> Dec 2022 - Feb 2023
+          </p>
+          <ul>
+            <li>Designed and prototyped a mobile banking app with 40+ screens in Figma.</li>
+            <li>
+              Implemented the app for Android and iOS in React Native, integrated it with the bank
+              backend, and shipped it to the bank's customers.
+            </li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <p>
+            <b>PT. Langitpay Digital Indonesia</b>, digital payments <span>|</span> Cilacap,
+            Indonesia
+          </p>
+          <p><i>Backend Developer Intern</i> <span>|</span> 2022</p>
+          <ul>
+            <li>Migrated a SQL-based monolithic web app to a NoSQL-based web app.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Open Source <span class="as-of">(npm and GitHub numbers as of Sep 2026)</span></h2>
+        <ul>
+          <li>
+            <a href="https://github.com/PT-Perkasa-Pilar-Utama/ppu-paddle-ocr"
+              ><b>ppu-paddle-ocr</b></a
+            >: created a PaddleOCR SDK in TypeScript for Node.js, Bun, Deno, browsers, and React
+            Native. 75,000+ npm downloads a month, 185,000+ in total, 136 GitHub stars, 35 releases.
+            Reads a receipt in about 140 ms at 99.5% character accuracy on the published benchmark.
+          </li>
+          <li>
+            <a href="https://github.com/PT-Perkasa-Pilar-Utama/ppu-ocv"><b>ppu-ocv</b></a
+            >: created a chainable image processing library on OpenCV.js. 76,000+ npm downloads a
+            month.
+          </li>
+          <li>
+            <a href="https://github.com/PT-Perkasa-Pilar-Utama/ppu-yolo-onnx-inference"
+              ><b>ppu-yolo-onnx-inference</b></a
+            >, <a href="https://github.com/PT-Perkasa-Pilar-Utama/ppu-pdf"><b>ppu-pdf</b></a
+            >,
+            <a href="https://github.com/PT-Perkasa-Pilar-Utama/ppu-doclayout"
+              ><b>ppu-doclayout</b></a
+            >, <a href="https://github.com/PT-Perkasa-Pilar-Utama/ppu-uniface"><b>ppu-uniface</b></a
+            >: published TypeScript libraries for object detection, PDF text extraction, document
+            layout analysis, and face recognition.
+          </li>
+          <li>
+            <a href="https://github.com/PT-Perkasa-Pilar-Utama/testate"><b>testate</b></a
+            >: shipped a snapshot and restore tool for test databases with Hono and SolidJS.
+          </li>
+          <li>
+            <a href="https://github.com/snowfluke/indo-g2p"><b>indo-g2p</b></a
+            >: wrote an Indonesian grapheme-to-phoneme converter for text-to-speech, with zero
+            dependencies.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Education</h2>
+        <div class="entry">
+          <p>
+            <b>STMIK Komputama Majenang</b>, Bachelor's Degree in Informatics Engineering
+            <span>|</span> Jan 2019 - Dec 2023
+          </p>
+          <ul>
+            <li>
+              Won 1st place in the Techcomfest 2022 Software Development Competition (Politeknik
+              Negeri Semarang), and 2nd and 3rd place in two other university technology
+              competitions.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Skills</h2>
+        <p class="skill"><b>Languages:</b> TypeScript, JavaScript, Go, Python, Kotlin, SQL</p>
+        <p class="skill">
+          <b>Backend:</b> Bun, Node.js, Hono, Elysia, Fiber, Express, REST and OpenAPI, WebSocket,
+          microservices
+        </p>
+        <p class="skill">
+          <b>Data:</b> PostgreSQL, MongoDB, SQLite, Redis, RabbitMQ, Drizzle ORM, S3
+        </p>
+        <p class="skill">
+          <b>Vision and AI:</b> ONNX Runtime, PaddleOCR, YOLO, OpenCV.js, face recognition, WASM
+          SIMD, LLM bots, MCP servers
+        </p>
+        <p class="skill">
+          <b>Frontend and mobile:</b> React, Next.js, SolidJS, Tailwind CSS, React Native, Android
+          with Kotlin, Figma
+        </p>
+        <p class="skill">
+          <b>Operations:</b> Linux, Docker, GitHub Actions, Nginx, Prometheus, Grafana, Loki
+        </p>
+        <p class="skill"><b>Spoken languages:</b> Indonesian (native), English (fluent)</p>
+      </section>
+    </main>
+  </body>
+</html>

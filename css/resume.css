@@ -1,0 +1,153 @@
+/* Resume: a sheet of A4 on screen, and exactly one A4 page in print. Plain black on white,
+   one column, system sans. Resume parsers and office printers both handle that best. */
+@page {
+  size: A4;
+  margin: 12mm 15mm;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: #111;
+  background: #f3f2ec;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 9.7pt;
+  line-height: 1.33;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.screen-only {
+  display: flex;
+  justify-content: space-between;
+  width: min(100% - 2rem, 210mm);
+  margin: 1rem auto 0;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.8125rem;
+}
+
+.screen-only a {
+  color: #006fe6;
+}
+
+.page {
+  width: min(100% - 2rem, 210mm);
+  min-height: 297mm;
+  margin: 1rem auto 2rem;
+  padding: 13mm 15mm;
+  background: #fff;
+  box-shadow: 0 0 0 1px #cbc9be;
+}
+
+header {
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 1mm;
+  font-size: 17pt;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.headline {
+  margin: 0 0 1mm;
+  font-size: 10.5pt;
+  font-weight: 700;
+}
+
+.contact {
+  margin: 0;
+}
+
+.contact span {
+  margin: 0 0.35em;
+  color: #777;
+}
+
+h2 {
+  margin: 3.4mm 0 1.4mm;
+  padding-bottom: 0.6mm;
+  border-bottom: 0.8pt solid #111;
+  font-size: 10pt;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.as-of {
+  font-size: 8pt;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.proof {
+  margin: 0 0 1.2mm;
+}
+
+/* One text line per fact, left to right. Two-column layouts scramble plain-text extraction. */
+.entry + .entry {
+  margin-top: 1.8mm;
+}
+
+.entry p,
+.skill {
+  margin: 0;
+}
+
+.entry p span {
+  margin: 0 0.35em;
+  color: #777;
+}
+
+.skill {
+  margin-bottom: 0.4mm;
+}
+
+ul {
+  margin: 0.6mm 0 0;
+  padding-left: 4.2mm;
+}
+
+li {
+  margin-bottom: 0.4mm;
+  padding-left: 0.6mm;
+}
+
+@media (max-width: 40rem) {
+  .page {
+    min-height: 0;
+    padding: 1.25rem;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .screen-only {
+    display: none;
+  }
+
+  .page {
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .entry,
+  li {
+    break-inside: avoid;
+  }
+}
