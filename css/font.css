@@ -1,0 +1,12 @@
+/* Geist Mono, self-hosted. A third-party font stylesheet blocked the first paint and cost two
+   extra connections. One variable file covers weights 400 to 600.
+   index.html does not link this file. js/main.js adds it after the first render, so the font
+   never competes with the first paint. Text shows in the fallback monospace until then. Both
+   fonts are 0.6em wide, so the swap does not move any text. */
+@font-face {
+  font-family: "Geist Mono";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/assets/fonts/geist-mono-latin.woff2") format("woff2");
+}

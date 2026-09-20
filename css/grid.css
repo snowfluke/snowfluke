@@ -177,6 +177,31 @@
   user-select: text;
 }
 
+/* ---- content before JavaScript ---- */
+
+.boot {
+  max-width: 44rem;
+  padding: var(--space-6) var(--space-4);
+  font-size: var(--text-md);
+  line-height: 1.65;
+}
+
+.boot h1 {
+  margin: 0 0 var(--space-3);
+  color: var(--accent);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.boot p {
+  margin: 0 0 var(--space-3);
+}
+
+.boot a {
+  margin-right: var(--space-3);
+  color: var(--accent);
+}
+
 /* ---- phone and touch ---- */
 
 .grid-scroll {

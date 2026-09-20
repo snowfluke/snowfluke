@@ -62,6 +62,11 @@ window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syn
 syncTheme();
 startRouter();
 
+// The font loads after the first render, so it does not delay it. See css/font.css.
+document.head.append(
+  Object.assign(document.createElement("link"), { rel: "stylesheet", href: "css/font.css" }),
+);
+
 loadPosts()
   .then((posts) => replaceSheet(blogSheet(posts, posts.length ? null : t("blog.empty"))))
   .catch(() => replaceSheet(blogSheet([], t("blog.failed"))));

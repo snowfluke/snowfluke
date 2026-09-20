@@ -1,17 +1,6 @@
 /* Design tokens. Palette and type follow gpu-lexer.vercel.app: warm paper, dashed rules, one accent.
    Theme: the system setting decides, unless <html data-theme="light|dark"> forces one.
    The dark values appear twice (media query and attribute). CSS has no way to share them. */
-/* Self-hosted, not Google Fonts. A third-party stylesheet blocked the first paint and cost
-   two extra connections. One variable file covers weights 400 to 600. */
-@font-face {
-  font-family: "Geist Mono";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  /* A root path, because this file is also inlined into index.html. */
-  src: url("/assets/fonts/geist-mono-latin.woff2") format("woff2");
-}
-
 :root {
   color-scheme: light;
 
@@ -19,13 +8,14 @@
   --paper-raised: #f3f2ec;
   --ink: #32332f;
   --ink-strong: #11120f;
-  --muted: #72736b;
+  /* muted and accent are text colors. Each keeps 4.5:1 on paper, paper-raised and accent-soft. */
+  --muted: #66675f;
   --line: #cbc9be;
   --line-bright: #a9a79c;
-  --accent: #006fe6;
+  --accent: #0062cc;
   --accent-soft: #e3eefb;
   --danger: #b3261e;
-  --range-tint: rgb(0 111 230 / 12%);
+  --range-tint: rgb(0 98 204 / 12%);
   --shadow: rgb(17 18 15 / 8%);
   --backdrop: rgb(17 18 15 / 35%);
 

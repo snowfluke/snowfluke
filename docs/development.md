@@ -106,7 +106,9 @@ The page is small, so round trips decide how fast it feels, not bytes.
   - The screen stylesheets, inlined in one `<style>` tag. The first paint then needs the HTML alone. The files in `css/` stay the source: edit them, never the inlined copy. `oxfmt` skips `index.html` for this reason.
 - Run `npm run head` after you change an import or a stylesheet. `npm run dev` runs it for you.
 - The XLSX writer, the markdown parser and the inactive language load on demand. Keep them behind a dynamic `import()`.
-- The font is self-hosted in `assets/fonts/` and preloaded. Do not add a third-party stylesheet: it blocks the first paint.
+- The font is self-hosted in `assets/fonts/`. `js/main.js` adds `css/font.css` after the first render, so the font never delays the first paint. Do not add a third-party stylesheet: it blocks the first paint.
+- The grid container in `index.html` starts with the key facts as plain HTML (`.boot`). A visitor on a slow link reads them before any script runs. Keep that text in step with `js/data/content.en.js`.
+- `--muted` and `--accent` are text colors. Each must keep 4.5:1 contrast on `--paper`, `--paper-raised` and `--accent-soft`, in both themes. PageSpeed tests the light theme.
 - JavaScript fills the menu row, the toolbar and the grid. Anything it fills must have its height reserved in CSS, or the grid jumps after the first paint.
 
 ## Checks
