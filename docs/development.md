@@ -108,6 +108,7 @@ The page is small, so round trips decide how fast it feels, not bytes.
 - The XLSX writer, the markdown parser and the inactive language load on demand. Keep them behind a dynamic `import()`.
 - The font is self-hosted in `assets/fonts/`. `js/main.js` adds `css/font.css` after the first render, so the font never delays the first paint. Do not add a third-party stylesheet: it blocks the first paint.
 - The grid container in `index.html` starts with the key facts as plain HTML (`.boot`). A visitor on a slow link reads them before any script runs. Keep that text in step with `js/data/content.en.js`.
+- Wrap every email address in the HTML in `<!--email_off-->` and `<!--/email_off-->`. Cloudflare's email obfuscation otherwise rewrites it and injects `email-decode.min.js`, a render-blocking script (about 450 ms on PageSpeed mobile).
 - `--muted` and `--accent` are text colors. Each must keep 4.5:1 contrast on `--paper`, `--paper-raised` and `--accent-soft`, in both themes. PageSpeed tests the light theme.
 - JavaScript fills the menu row, the toolbar and the grid. Anything it fills must have its height reserved in CSS, or the grid jumps after the first paint.
 

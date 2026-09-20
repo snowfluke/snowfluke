@@ -48,7 +48,7 @@
         if (lang !== "en") files.push(`js/locales/${lang}.js`);
         for (const href of files) {
           document.head.append(
-            Object.assign(document.createElement("link"), { rel: "modulepreload", href }),
+            Object.assign(document.createElement("link"), { rel: "modulepreload", href, fetchPriority: "low" }),
           );
         }
       })();
@@ -137,6 +137,8 @@
           aria-label="Spreadsheet"
           data-i18n-aria="aria.grid"
         >
+          <!-- The email_off comments stop Cloudflare's email obfuscation here. It would inject
+               a render-blocking script (email-decode.min.js) into the page. -->
           <!-- Shown until js/grid.js renders the sheet. A visitor on a slow link reads this
                at once, and so does a search engine. Keep it in step with content.en.js. -->
           <div class="boot">
@@ -147,7 +149,7 @@
               month.
             </p>
             <p>
-              <a href="mailto:awalariansyah7@gmail.com">awalariansyah7@gmail.com</a>
+              <!--email_off--><a href="mailto:awalariansyah7@gmail.com">awalariansyah7@gmail.com</a><!--/email_off-->
               <a href="downloads/awal-ariansyah-resume.pdf">Resume (PDF)</a>
               <a href="https://github.com/snowfluke">GitHub</a>
               <a href="https://www.linkedin.com/in/awalariansyah/">LinkedIn</a>
@@ -170,7 +172,7 @@
         </p>
         <p>This site is a spreadsheet and needs JavaScript. You can still reach me here:</p>
         <ul>
-          <li><a href="mailto:awalariansyah7@gmail.com">awalariansyah7@gmail.com</a></li>
+          <li><!--email_off--><a href="mailto:awalariansyah7@gmail.com">awalariansyah7@gmail.com</a><!--/email_off--></li>
           <li><a href="downloads/awal-ariansyah-resume.pdf">Resume (PDF)</a></li>
           <li><a href="https://github.com/snowfluke">github.com/snowfluke</a></li>
           <li>
