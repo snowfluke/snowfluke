@@ -101,7 +101,10 @@ Portfolio sheets never go to localStorage. A returning visitor gets your new con
 
 The page is small, so round trips decide how fast it feels, not bytes.
 
-- `index.html` preloads every module that `js/main.js` imports. Without that list the browser finds the modules level by level, one round trip for each level. After you add, remove or rename an import, run `npm run preloads`. `tests/preloads.test.mjs` fails when the list is stale.
+- `index.html` holds two generated blocks. `npm run head` writes both, and `tests/head.test.mjs` fails when either is stale.
+  - A `modulepreload` link for every module that `js/main.js` imports. Without that list the browser finds the modules level by level, one round trip for each level. The links are low priority, so they do not take bandwidth from the first paint.
+  - The screen stylesheets, inlined in one `<style>` tag. The first paint then needs the HTML alone. The files in `css/` stay the source: edit them, never the inlined copy. `oxfmt` skips `index.html` for this reason.
+- Run `npm run head` after you change an import or a stylesheet. `npm run dev` runs it for you.
 - The XLSX writer, the markdown parser and the inactive language load on demand. Keep them behind a dynamic `import()`.
 - The font is self-hosted in `assets/fonts/` and preloaded. Do not add a third-party stylesheet: it blocks the first paint.
 - JavaScript fills the menu row, the toolbar and the grid. Anything it fills must have its height reserved in CSS, or the grid jumps after the first paint.

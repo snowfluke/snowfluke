@@ -8,7 +8,8 @@
   font-style: normal;
   font-weight: 400 600;
   font-display: swap;
-  src: url("../assets/fonts/geist-mono-latin.woff2") format("woff2");
+  /* A root path, because this file is also inlined into index.html. */
+  src: url("/assets/fonts/geist-mono-latin.woff2") format("woff2");
 }
 
 :root {
