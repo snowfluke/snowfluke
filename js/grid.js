@@ -77,6 +77,7 @@ function renderCell(sheet, display, row, col) {
 export function mountGrid(root) {
   let table = null;
   let editor = null;
+  let rendered = false;
 
   const cellNode = (row, col) => table?.tBodies[0].rows[row - 1]?.cells[col];
 
@@ -134,7 +135,10 @@ export function mountGrid(root) {
     );
     root.replaceChildren(table);
     applyView();
-    markSelection();
+    // The first render shows cell A1, which is in view already. scrollIntoView would force a
+    // full layout of the new table during page load for nothing.
+    markSelection(rendered);
+    rendered = true;
   }
 
   function applyView() {
@@ -391,10 +395,14 @@ export function mountGrid(root) {
 
   // Phone widths depend on the viewport, so a rotation needs a new render. A height-only
   // resize (the URL bar sliding away) does not.
-  let lastWidth = window.innerWidth;
+  // No read at mount: window.innerWidth forces a layout, and page load cannot spare one.
+  let lastWidth = null;
   window.addEventListener("resize", () => {
-    if (window.innerWidth === lastWidth) return;
-    lastWidth = window.innerWidth;
+    const width = window.innerWidth;
+    if (width === lastWidth) return;
+    const first = lastWidth === null;
+    lastWidth = width;
+    if (first && !phone.matches) return;
     if (phone.matches && !state.article && !editor) render();
   });
   phone.addEventListener("change", () => state.article || render());
