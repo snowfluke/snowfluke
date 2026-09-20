@@ -2,26 +2,29 @@
 // The language is fixed for the life of the page. A switch saves the choice and reloads,
 // because menus, toolbar and sheets build their text once.
 import en from "./locales/en.js";
-import id from "./locales/id.js";
 import { loadSaved } from "./storage.js";
 
-const LOCALES = { en, id };
+export const LANGUAGES = ["en", "id"];
 
 // Order: ?lang= in the URL (a link someone shared), then the saved choice, then the browser.
 function detect() {
   const param = new URLSearchParams(globalThis.location?.search ?? "").get("lang");
-  if (LOCALES[param]) return param;
+  if (LANGUAGES.includes(param)) return param;
   const saved = loadSaved()?.view?.lang;
-  if (LOCALES[saved]) return saved;
+  if (LANGUAGES.includes(saved)) return saved;
   return globalThis.navigator?.language?.toLowerCase().startsWith("id") ? "id" : "en";
 }
 
 export const lang = detect();
+
+// English is always here, as the fallback. Another language loads only when it is active,
+// so an English visitor does not download Indonesian text.
+const active = lang === "en" ? en : (await import(`./locales/${lang}.js`)).default;
 export const otherLang = lang === "en" ? "id" : "en";
 
 // t("copied.many", { count: 3 }) fills "{count}" in the text.
 export function t(key, params = {}) {
-  const text = LOCALES[lang][key] ?? en[key] ?? key;
+  const text = active[key] ?? en[key] ?? key;
   return text.replace(/\{(\w+)\}/g, (_, name) => params[name] ?? "");
 }
 

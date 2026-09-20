@@ -9,7 +9,6 @@ import * as store from "./state.js";
 import { flashStatus } from "./status.js";
 import { effectiveTheme } from "./theme.js";
 import { el, safeUrl } from "./utils.js";
-import { buildXlsx } from "./xlsx.js";
 
 const { state } = store;
 
@@ -66,7 +65,9 @@ export function exportCsv() {
 const absoluteUrl = (url) => new URL(url, location.href).href;
 
 // The whole workbook: portfolio sheets plus the sheets the visitor made.
-export function downloadXlsx() {
+// The writer loads on the first click. Most visitors never download the workbook.
+export async function downloadXlsx() {
+  const { buildXlsx } = await import("./xlsx.js");
   const bytes = buildXlsx(state.sheets, absoluteUrl);
   download(
     "awal-ariansyah-portfolio.xlsx",

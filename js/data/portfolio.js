@@ -3,10 +3,9 @@
 // and content.id.js. GitHub and npm numbers are a snapshot: update STATS_DATE with them.
 import { lang } from "../i18n.js";
 import { header, linked, sheetFromRows, wrapped } from "../sheet.js";
-import en from "./content.en.js";
-import id from "./content.id.js";
 
-const c = { en, id }[lang];
+// Only the active language downloads. tests/i18n.test.mjs keeps the two files in step.
+const c = (await import(`./content.${lang}.js`)).default;
 
 const EMAIL = "awalariansyah7@gmail.com";
 const STATS_DATE = "2026-09";

@@ -1,5 +1,4 @@
 import { t } from "./i18n.js";
-import { renderMarkdown, parseFrontmatter } from "./markdown.js";
 import { header, linked, sheetFromRows, wrapped } from "./sheet.js";
 
 export const BLOG_ID = "blog";
@@ -49,7 +48,12 @@ export async function loadPosts() {
 
 export async function loadArticle(slug) {
   if (!SLUG.test(slug)) throw new Error(`Bad slug: ${slug}`);
-  const source = await (await fetchOk(`blog/${slug}.md`)).text();
+  // The parser loads with the first article, in parallel with the post itself.
+  const [{ parseFrontmatter, renderMarkdown }, response] = await Promise.all([
+    import("./markdown.js"),
+    fetchOk(`blog/${slug}.md`),
+  ]);
+  const source = await response.text();
   const { meta, body } = parseFrontmatter(source);
   // A draft stays out of index.json. It must also not open by a typed URL.
   if (meta.draft === "true") throw new Error(`Draft: ${slug}`);

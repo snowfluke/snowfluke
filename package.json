@@ -7,6 +7,7 @@
   "scripts": {
     "blog": "node scripts/build-blog.mjs",
     "resume": "node scripts/build-resume.mjs",
+    "preloads": "node scripts/build-preloads.mjs",
     "dev": "node scripts/build-blog.mjs && python3 -m http.server 3000",
     "test": "node --test tests/*.test.mjs",
     "lint": "oxlint",

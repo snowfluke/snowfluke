@@ -208,6 +208,9 @@
   .menus {
     order: 2;
     flex-basis: 100%;
+    /* JavaScript fills this row. Its height is reserved, or the grid would jump down by one
+       line after the first paint. One text line plus the padding of .menu-title. */
+    min-height: calc(1.5em + 2 * var(--space-2));
     margin-left: calc(var(--space-2) * -1);
   }
 

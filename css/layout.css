@@ -222,7 +222,7 @@ a:focus-visible {
 .fx {
   flex: none;
   padding: 0 var(--space-3);
-  color: var(--line-bright);
+  color: var(--muted);
   font-style: italic;
   font-weight: 600;
   user-select: none;
@@ -240,7 +240,7 @@ a:focus-visible {
 }
 
 .formula-input::placeholder {
-  color: var(--line-bright);
+  color: var(--muted);
 }
 
 /* ---- workbench: the frame around the grid, with "+" corner marks ---- */
@@ -361,7 +361,7 @@ a:focus-visible {
   border: 0;
   border-top: 2px solid transparent;
   background: none;
-  color: var(--line-bright);
+  color: var(--muted);
   outline-offset: -2px;
 }
 

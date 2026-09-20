@@ -31,20 +31,38 @@
     <link rel="alternate" hreflang="x-default" href="https://www.awala.my.id/" />
     <script>
       // Runs before the first paint, so a saved theme never flashes the other one.
-      try {
-        const theme = JSON.parse(localStorage.getItem("snowfluke.sheets.v1"))?.view?.theme;
-        if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
-      } catch {}
+      // It also preloads the text of the active language. Keep the language order in step
+      // with detect() in js/i18n.js: URL parameter, saved choice, browser.
+      (() => {
+        let view = {};
+        try {
+          view = JSON.parse(localStorage.getItem("snowfluke.sheets.v1"))?.view ?? {};
+        } catch {}
+        if (view.theme === "light" || view.theme === "dark")
+          document.documentElement.dataset.theme = view.theme;
+        const languages = ["en", "id"];
+        const param = new URLSearchParams(location.search).get("lang");
+        const browser = navigator.language?.toLowerCase().startsWith("id") ? "id" : "en";
+        const lang = [param, view.lang, browser].find((code) => languages.includes(code));
+        const files = [`js/data/content.${lang}.js`];
+        if (lang !== "en") files.push(`js/locales/${lang}.js`);
+        for (const href of files) {
+          document.head.append(
+            Object.assign(document.createElement("link"), { rel: "modulepreload", href }),
+          );
+        }
+      })();
     </script>
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23faf9f5'/%3E%3Cpath d='M0 5.5h16M0 10.5h16M5.5 0v16M10.5 0v16' stroke='%23cbc9be'/%3E%3Crect x='5.5' y='5.5' width='5' height='5' fill='none' stroke='%23006fe6' stroke-width='1.5'/%3E%3C/svg%3E"
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="/assets/fonts/geist-mono-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
     <link rel="stylesheet" href="css/tokens.css" />
     <link rel="stylesheet" href="css/layout.css" />
@@ -52,10 +70,34 @@
     <link rel="stylesheet" href="css/grid.css" />
     <link rel="stylesheet" href="css/article.css" />
     <link rel="stylesheet" href="css/print.css" media="print" />
+    <!-- modulepreload:start (npm run preloads) -->
+    <link rel="modulepreload" href="js/actions.js" />
+    <link rel="modulepreload" href="js/article.js" />
+    <link rel="modulepreload" href="js/blog.js" />
+    <link rel="modulepreload" href="js/clipboard.js" />
+    <link rel="modulepreload" href="js/data/portfolio.js" />
+    <link rel="modulepreload" href="js/dialog.js" />
+    <link rel="modulepreload" href="js/formula.js" />
+    <link rel="modulepreload" href="js/formulabar.js" />
+    <link rel="modulepreload" href="js/grid.js" />
+    <link rel="modulepreload" href="js/i18n.js" />
+    <link rel="modulepreload" href="js/locales/en.js" />
+    <link rel="modulepreload" href="js/menubar.js" />
+    <link rel="modulepreload" href="js/menus.js" />
+    <link rel="modulepreload" href="js/router.js" />
+    <link rel="modulepreload" href="js/sheet.js" />
+    <link rel="modulepreload" href="js/state.js" />
+    <link rel="modulepreload" href="js/status.js" />
+    <link rel="modulepreload" href="js/storage.js" />
+    <link rel="modulepreload" href="js/tabs.js" />
+    <link rel="modulepreload" href="js/theme.js" />
+    <link rel="modulepreload" href="js/toolbar.js" />
+    <link rel="modulepreload" href="js/utils.js" />
+    <!-- modulepreload:end -->
     <script type="module" src="js/main.js"></script>
   </head>
   <body>
-    <div class="app" id="app">
+    <div class="app" id="app" data-editable="false">
       <header class="menubar">
         <a class="brand" href="#/about">Awal Ariansyah</a>
         <nav class="menus" id="menus" aria-label="Menu bar" data-i18n-aria="aria.menubar"></nav>

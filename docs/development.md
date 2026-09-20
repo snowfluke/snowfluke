@@ -97,6 +97,15 @@ Portfolio sheets never go to localStorage. A returning visitor gets your new con
 | `scripts/build-blog.mjs`                  | Writes `blog/index.json`                                       |
 | `tests/`                                  | `node:test` checks for the parsers and the XLSX writer         |
 
+## Load speed
+
+The page is small, so round trips decide how fast it feels, not bytes.
+
+- `index.html` preloads every module that `js/main.js` imports. Without that list the browser finds the modules level by level, one round trip for each level. After you add, remove or rename an import, run `npm run preloads`. `tests/preloads.test.mjs` fails when the list is stale.
+- The XLSX writer, the markdown parser and the inactive language load on demand. Keep them behind a dynamic `import()`.
+- The font is self-hosted in `assets/fonts/` and preloaded. Do not add a third-party stylesheet: it blocks the first paint.
+- JavaScript fills the menu row, the toolbar and the grid. Anything it fills must have its height reserved in CSS, or the grid jumps after the first paint.
+
 ## Checks
 
 ```sh
