@@ -1,5 +1,9 @@
 Hi, I'm Awal Ariansyah, a backend engineer in Jakarta who builds OCR and computer vision systems, and this is [my portfolio](https://www.awala.my.id/).
 
-I believe reality runs on a hidden system, with a variable under the things we measure that keeps the whole in balance. Every creation has two sides, so the moment beauty appears, ugliness is defined with it. A high brings a low into existence, and a bright light throws a sharp shadow behind it. Push a force to its extreme and the opposite reaction arrives to restore the balance. Mathematics is the strictest field I know, yet it needed imaginary numbers, numbers that are not "real", to finish its work. So when a problem refuses to move, I walk around it and try it from the opposite direction.
+I believe reality runs on a hidden system, with a variable under the things we measure that keeps the whole in balance. Every creation has two sides, so the moment beauty appears, ugliness is defined with it. A high brings a low into existence, and a bright light throws a sharp shadow behind it. 
 
-Human expectation is part of that system, and I think it carries more power than we give it. I call the idea Opposite Expectation: the things I resist persist, and the things I accept transform. When I expect the world to have two sides, the side I did not want becomes material to work with. I draw this from my faith, from Taoism, and from Stoicism, and I ask nobody else to share it. I write it down to keep control of my own mind, and to remind myself that the universe is balanced.
+Push a force to its extreme and the opposite reaction arrives to restore the balance. Mathematics is the strictest field I know, yet it needed imaginary numbers, numbers that are not "real", to finish its work. So when a problem refuses to move, I walk around it and try it from the opposite direction.
+
+Human expectation is part of that system, and I think it carries more power than we give it. I call the idea Opposite Expectation: the things I resist persist, and the things I accept transform. When I expect the world to have two sides, the side I did not want becomes material to work with. 
+
+I draw this from my faith, from Taoism, and from Stoicism, and I ask nobody else to share it. I write it down to keep control of my own mind, and to remind myself that the universe is balanced.
